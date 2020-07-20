@@ -1,15 +1,12 @@
 package ru.otus.generics;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class DIYArrayList<E> implements List<E> {
 
     public Object[] arrayData;
-    public int sizeArray = 0;
-    public int size = 0;
+    private int sizeArray = 0;
+    private int size = 0;
 
     private static final int DEFAULT_CAPACITY = 5;
     private static final int MULTIPLIER_INCREASE = 2;
@@ -61,7 +58,7 @@ public class DIYArrayList<E> implements List<E> {
             this.arrayData = arrayData;
             this.sizeArray *= MULTIPLIER_INCREASE;
         }
-        this.arrayData[size + 1] = e;
+        this.arrayData[size] = e;
         this.size++;
         return true;
     }
@@ -108,14 +105,16 @@ public class DIYArrayList<E> implements List<E> {
 
     @Override
     public E get(int index) {
-        //return null;
-        throw new UnsupportedOperationException();
+        checkIndex(index);
+        return (E) this.arrayData[index];
     }
 
     @Override
     public E set(int index, E element) {
-        //return null;
-        throw new UnsupportedOperationException();
+        checkIndex(index);
+        E oldElement = get(index);
+        this.arrayData[index] = element;
+        return oldElement;
     }
 
     @Override
@@ -141,20 +140,75 @@ public class DIYArrayList<E> implements List<E> {
     }
 
     @Override
-    public ListIterator<E> listIterator() {
-        //return null;
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public ListIterator<E> listIterator(int index) {
         //return null;
         throw new UnsupportedOperationException();
     }
 
     @Override
+    public ListIterator<E> listIterator() {
+        return new ListIterator<E>() {
+            private int iteratorIndex = -1;
+            @Override
+            public boolean hasNext() {
+                return iteratorIndex != size;
+            }
+
+            @Override
+            public E next() {
+                if (iteratorIndex >= size) {
+                    throw new NoSuchElementException();
+                }
+                iteratorIndex += 1;
+                return (E) arrayData[iteratorIndex];
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return false;
+            }
+
+            @Override
+            public E previous() {
+                return null;
+            }
+
+            @Override
+            public int nextIndex() {
+                return 0;
+            }
+
+            @Override
+            public int previousIndex() {
+                return 0;
+            }
+
+            @Override
+            public void remove() {
+
+            }
+
+            @Override
+            public void set(E e) {
+
+            }
+
+            @Override
+            public void add(E e) {
+
+            }
+        };
+    }
+
+    @Override
     public List<E> subList(int fromIndex, int toIndex) {
         //return null;
         throw new UnsupportedOperationException();
+    }
+
+    private void checkIndex(int index) {
+        if (index > this.size) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 }

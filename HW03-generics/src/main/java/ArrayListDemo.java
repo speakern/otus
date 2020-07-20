@@ -1,30 +1,31 @@
 import ru.otus.generics.DIYArrayList;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 public class ArrayListDemo {
     public static void main(String[] args) {
-//        DIYArrayList<Integer> list = new DIYArrayList();
-//        list.add(2);
-        //list.addAll()
-//        List<String> listA = new ArrayList();
 
+        List<String> list = new DIYArrayList();
+        for (int i = 0; i < 20; i++) {
+            list.add("str" + i);
+        }
+//        System.out.println("size: " + list.size());
+        Collections.addAll(list, "6", "7");
+//        System.out.println("size: " + list.size());
 
-        DIYArrayList<String> list = new DIYArrayList();
-        list.add("1");
-        list.add("5");
-        list.add("4");
-        list.add("3");
-        list.add("2");
+//        Collections.static <T> void copy(List<? super T> dest, List<? extends T> src)
+//        Collections.static <T> void sort(List<T> list, Comparator<? super T> c)
+        List<String> listSource = new DIYArrayList();
+        for (int i = 0; i < 11; i++) {
+            listSource.add("str" + (i + 21));
+        }
+        //Collections.copy(list,listSource);
 
-        System.out.println("list.sizeArray: " + list.sizeArray + " list.size: " + list.size);
-        list.add("1");
-        System.out.println("list.sizeArray: " + list.sizeArray + " list.size: " + list.size);
-
-//        Set<String> set = new HashSet<>();
-//        set.add("7");
-//        set.add("6");
-//        list.addAll(set);
-
- //       list.forEach(System.out::println);
-
+        Iterator<String> iterator = list.listIterator();
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println(iterator.next());
+        }
     }
 }
