@@ -165,37 +165,41 @@ public class DIYArrayList<E> implements List<E> {
 
             @Override
             public boolean hasPrevious() {
-                return false;
+                //return false;
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public E previous() {
-                return null;
+               // return null;
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public int nextIndex() {
-                return 0;
+                //return 0;
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public int previousIndex() {
-                return 0;
+                //return 0;
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public void remove() {
-
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public void set(E e) {
-
+                arrayData[iteratorIndex] = e;
             }
 
             @Override
             public void add(E e) {
-
+                throw new UnsupportedOperationException();
             }
         };
     }
