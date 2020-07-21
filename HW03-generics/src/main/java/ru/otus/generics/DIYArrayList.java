@@ -33,14 +33,29 @@ public class DIYArrayList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        throw new UnsupportedOperationException();
-        //return null;
+        //throw new UnsupportedOperationException();
+        return new Iterator<E>() {
+            private int iteratorIndex = -1;
+
+            @Override
+            public boolean hasNext() {
+                return iteratorIndex != size - 1;
+            }
+
+            @Override
+            public E next() {
+                if (iteratorIndex >= size) {
+                    throw new NoSuchElementException();
+                }
+                iteratorIndex += 1;
+                return (E) arrayData[iteratorIndex];
+            }
+        };
     }
 
     @Override
     public Object[] toArray() {
-        throw new UnsupportedOperationException();
-        //return new Object[0];
+        return Arrays.copyOf(arrayData, size);
     }
 
     @Override

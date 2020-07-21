@@ -1,4 +1,7 @@
 import ru.otus.generics.DIYArrayList;
+import ru.otus.generics.entries.Cat;
+import ru.otus.generics.entries.HomeCat;
+import ru.otus.generics.entries.WildCat;
 
 import java.util.*;
 
@@ -24,12 +27,48 @@ public class ArrayListDemo {
         Collections.copy(listArray, listSourceArray);
 
         Collections.sort(list, NAME);
+        Collections.sort(listArray, NAME);
+
+        System.out.println(list.size());
+        System.out.println(listArray.size());
 
         print(listArray);
+
+//        List<Cat> list = new DIYArrayList();
+//        fillInCat(list, 20, 0);
+//
+//        List<Cat> listArray = new ArrayList();
+//        fillInCat(listArray, 20, 0);
+//
+//        Collections.addAll(list, new HomeCat("Пушистик"), new HomeCat("Пушистик2"));
+//        Collections.addAll(listArray,  new HomeCat("Пушистик"), new HomeCat("Пушистик2"));
+//
+//        List<Cat> listSource = new DIYArrayList();
+//        fillInCat(listSource, 10, 30);
+//
+//        List<Cat> listSourceArray = new ArrayList();
+//        fillInCat(listSourceArray, 10, 30);
+//
+//        Collections.copy(list, listSource);
+//        Collections.copy(listArray, listSourceArray);
+//
+//        Collections.sort(list, CAT);
+//        Collections.sort(listArray, CAT);
+//
+//        print(list);
+//        System.out.println("-----------------------------");
+//        print(listArray);
+
     }
 
     public static Comparator<String> NAME = Comparator.comparingInt(Integer::valueOf);
 
+    public static Comparator<Cat> CAT = new Comparator<Cat>() {
+        @Override
+        public int compare(Cat o1, Cat o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    };
 
     private static void fillIn(List<String> list, int size, int shift) {
         for (int i = 0; i < size; i++) {
@@ -37,8 +76,15 @@ public class ArrayListDemo {
         }
     }
 
-    private static void print(List<String> list) {
-        Iterator<String> iterator = list.listIterator();
+    private static void fillInCat(List<Cat> list, int size, int shift) {
+        for (int i = 0; i < size; i++) {
+            list.add(new HomeCat("Барсик" + (i + shift)));
+            list.add(new WildCat("Барсик" + (i + shift)));
+        }
+    }
+
+    private static <T> void print(List<T> list) {
+        Iterator<T> iterator = list.listIterator();
         for(int i = 0; i < list.size(); i++) {
             System.out.println(iterator.next());
         }
