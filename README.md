@@ -8,7 +8,7 @@
 Виталий Куценко<br>
 
 Студент:
-Матренин Алексей
+Матрёнин Алексей
 ammatrenin@sberbank.ru
 
 https://github.com/speakern/otus
