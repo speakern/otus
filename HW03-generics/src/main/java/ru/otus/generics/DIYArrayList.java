@@ -33,24 +33,7 @@ public class DIYArrayList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        //throw new UnsupportedOperationException();
-        return new Iterator<E>() {
-            private int iteratorIndex = -1;
-
-            @Override
-            public boolean hasNext() {
-                return iteratorIndex != size - 1;
-            }
-
-            @Override
-            public E next() {
-                if (iteratorIndex >= size) {
-                    throw new NoSuchElementException();
-                }
-                iteratorIndex += 1;
-                return (E) arrayData[iteratorIndex];
-            }
-        };
+        return new DIYListIterator<>();
     }
 
     @Override
@@ -160,63 +143,65 @@ public class DIYArrayList<E> implements List<E> {
         throw new UnsupportedOperationException();
     }
 
+    class DIYListIterator<E> implements ListIterator<E> {
+        private int iteratorIndex = -1;
+        @Override
+        public boolean hasNext() {
+            return iteratorIndex != size - 1;
+        }
+
+        @Override
+        public E next() {
+            if (iteratorIndex >= size) {
+                throw new NoSuchElementException();
+            }
+            iteratorIndex += 1;
+            return (E) arrayData[iteratorIndex];
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            //return false;
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public E previous() {
+            // return null;
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public int nextIndex() {
+            //return 0;
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public int previousIndex() {
+            //return 0;
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void set(E e) {
+            arrayData[iteratorIndex] = e;
+        }
+
+        @Override
+        public void add(E e) {
+            throw new UnsupportedOperationException();
+        }
+    }
+
     @Override
     public ListIterator<E> listIterator() {
-        return new ListIterator<E>() {
-            private int iteratorIndex = -1;
-            @Override
-            public boolean hasNext() {
-                return iteratorIndex != size;
-            }
-
-            @Override
-            public E next() {
-                if (iteratorIndex >= size) {
-                    throw new NoSuchElementException();
-                }
-                iteratorIndex += 1;
-                return (E) arrayData[iteratorIndex];
-            }
-
-            @Override
-            public boolean hasPrevious() {
-                //return false;
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public E previous() {
-               // return null;
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public int nextIndex() {
-                //return 0;
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public int previousIndex() {
-                //return 0;
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public void set(E e) {
-                arrayData[iteratorIndex] = e;
-            }
-
-            @Override
-            public void add(E e) {
-                throw new UnsupportedOperationException();
-            }
-        };
+        return new DIYListIterator<>();
     }
 
     @Override
