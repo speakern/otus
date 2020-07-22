@@ -44,7 +44,6 @@ public class DIYArrayList<E> implements List<E> {
     @Override
     public <T> T[] toArray(T[] a) {
         throw new UnsupportedOperationException();
-        //return null;
     }
 
     @Override
@@ -64,31 +63,26 @@ public class DIYArrayList<E> implements List<E> {
     @Override
     public boolean remove(Object o) {
         throw new UnsupportedOperationException();
-        //return false;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
         throw new UnsupportedOperationException();
-        //return false;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
         throw new UnsupportedOperationException();
-        //return false;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         throw new UnsupportedOperationException();
-        //return false;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
         throw new UnsupportedOperationException();
-        //return false;
     }
 
     @Override
@@ -122,7 +116,6 @@ public class DIYArrayList<E> implements List<E> {
 
     @Override
     public E remove(int index) {
-        //return null;
         throw new UnsupportedOperationException();
     }
 
@@ -133,18 +126,17 @@ public class DIYArrayList<E> implements List<E> {
 
     @Override
     public int lastIndexOf(Object o) {
-        // return 0;
         throw new UnsupportedOperationException();
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        //return null;
         throw new UnsupportedOperationException();
     }
 
     class DIYListIterator<E> implements ListIterator<E> {
         private int iteratorIndex = -1;
+
         @Override
         public boolean hasNext() {
             return iteratorIndex != size - 1;
@@ -161,25 +153,21 @@ public class DIYArrayList<E> implements List<E> {
 
         @Override
         public boolean hasPrevious() {
-            //return false;
             throw new UnsupportedOperationException();
         }
 
         @Override
         public E previous() {
-            // return null;
             throw new UnsupportedOperationException();
         }
 
         @Override
         public int nextIndex() {
-            //return 0;
             throw new UnsupportedOperationException();
         }
 
         @Override
         public int previousIndex() {
-            //return 0;
             throw new UnsupportedOperationException();
         }
 
@@ -206,7 +194,6 @@ public class DIYArrayList<E> implements List<E> {
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        //return null;
         throw new UnsupportedOperationException();
     }
 

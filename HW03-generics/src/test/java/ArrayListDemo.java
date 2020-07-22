@@ -1,5 +1,7 @@
 import ru.otus.generics.DIYArrayList;
-
+import ru.otus.generics.entries.Cat;
+import ru.otus.generics.entries.HomeCat;
+import ru.otus.generics.entries.WildCat;
 
 import java.util.*;
 
@@ -74,12 +76,12 @@ public class ArrayListDemo {
         }
     }
 
-//    private static void fillInCat(List<Cat> list, int size, int shift) {
-//        for (int i = 0; i < size; i++) {
-//            list.add(new HomeCat("Барсик" + (i + shift)));
-//            list.add(new WildCat("Барсик" + (i + shift)));
-//        }
-//    }
+    private static void fillInCat(List<Cat> list, int size, int shift) {
+        for (int i = 0; i < size; i++) {
+            list.add(new HomeCat("Барсик" + (i + shift)));
+            list.add(new WildCat("Барсик" + (i + shift)));
+        }
+    }
 
     private static <T> void print(List<T> list) {
         Iterator<T> iterator = list.listIterator();

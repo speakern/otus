@@ -96,12 +96,7 @@ class DIYArrayListTest {
 
     public static Comparator<String> NUMBER = Comparator.comparingInt(Integer::valueOf);
 
-    public static Comparator<Cat> CAT = new Comparator<Cat>() {
-        @Override
-        public int compare(Cat o1, Cat o2) {
-            return o1.getName().compareTo(o2.getName());
-        }
-    };
+    public static Comparator<Cat> CAT = Comparator.comparing(Cat::getName);
 
     private static void fillIn(List<String> list, int size, int shift) {
         for (int i = 0; i < size; i++) {
@@ -115,5 +110,4 @@ class DIYArrayListTest {
             list.add(new WildCat("Барсик" + (i + shift)));
         }
     }
-
 }
