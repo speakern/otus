@@ -1,8 +1,6 @@
 package ru.otus.solid;
 
-import java.util.Comparator;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Объект класса АТМ должен уметь:
@@ -19,23 +17,27 @@ public class Atm {
     private Storage storage;
 
     public Atm() {
-        storage = new Storage();
+        storage = new StorageImpl();
     }
 
-    public void takeInBankNote(BankNote bankNote, int count) {
+    public void putBankNote(BankNote bankNote, int count) {
         storage.put(bankNote, count);
     }
 
-    public Map<BankNote, Integer> giveMoney(Integer amount) {
-        return null;
+    public Map<BankNote, Integer> getMoney(Integer amount) {
+        Map<BankNote, Integer> result = storage.getBanknoteSetForAmount(amount);
+        storage.reduce(result);
+        return result;
     }
 
-    public Long giveRest() {
-        return storage.giveRest();
+    public Long getRest() {
+        return storage.getRest();
     }
 
-    public void printStorage(){
-        storage.print();
-        System.out.println(storage.giveCountBill(BankNote.RUB5000));
+    public void printAtm(){
+        System.out.println("ATM:");
+        storage.getAllTypeOfBanknote()
+                .forEach(bankNote ->
+                        System.out.println(bankNote + " " + storage.giveCountBanknote(bankNote)));
     }
 }
