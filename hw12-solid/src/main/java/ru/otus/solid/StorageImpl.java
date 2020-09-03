@@ -10,7 +10,8 @@ public class StorageImpl implements Storage {
     }
 
     public void put(BankNote bankNote, int count) {
-        cells.put(bankNote, count);
+        int currentCount = cells.containsKey(bankNote) ? cells.get(bankNote) : 0;
+        cells.put(bankNote, currentCount + count);
     }
 
     public void reduce(Map<BankNote, Integer> banknoteSet) {
@@ -19,14 +20,14 @@ public class StorageImpl implements Storage {
         });
     }
 
-    public Long getRest() {
+    public long getRest() {
         return cells.entrySet().stream().mapToLong(e -> e.getKey().getValue() * e.getValue()).sum();
     }
 
     public Map<BankNote, Integer> getBanknoteSetForAmount(Integer amount) {
         Map<BankNote, Integer> billSet = new HashMap<>();
         int currentSum = 0;
-        int countOfCurrentBill = 0;
+        int countOfCurrentBill;
         int currentRestAmount = amount;
 
         for (Map.Entry<BankNote, Integer> entry : cells.entrySet()) {
@@ -39,10 +40,10 @@ public class StorageImpl implements Storage {
             if (currentSum == amount) {
                 return billSet;
             }
-            if (currentSum > amount) return null;
+            if (currentSum > amount) break;
             currentRestAmount = amount - currentSum;
         }
-        return null;
+        throw new NoBanknoteForDeliveryException("Нет банкнот для выдачи");
     }
 
     private int getMaxCountBillInCellForAmount(BankNote bankNote, int amount) {
