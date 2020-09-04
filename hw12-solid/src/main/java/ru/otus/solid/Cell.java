@@ -15,4 +15,17 @@ public class Cell {
     public void setCount(int count) {
         this.count = count;
     }
+
+    public void add(int addition) {
+        count = count + addition;
+    }
+
+    public void decrease(int count) {
+        this.count = Math.abs(this.count - count);
+    }
+
+    public int getMaxCountForAmount(int amount) {
+        int countNeedBill = amount / bankNote.getValue();
+        return count > countNeedBill ? countNeedBill : count;
+    }
 }

@@ -10,8 +10,7 @@ public class StorageImpl implements Storage {
     }
 
     public void put(BankNote bankNote, int count) {
-        int currentCount = cells.containsKey(bankNote) ? cells.get(bankNote) : 0;
-        cells.put(bankNote, currentCount + count);
+        cells.merge(bankNote, count, (oldVal, newVal) -> oldVal + newVal);
     }
 
     public void reduce(Map<BankNote, Integer> banknoteSet) {

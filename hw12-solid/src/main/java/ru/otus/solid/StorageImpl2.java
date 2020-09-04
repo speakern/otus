@@ -10,50 +10,39 @@ public class StorageImpl2 implements Storage {
     }
 
     public void put(BankNote bankNote, int count) {
-//        cells.put(bankNote, count);
-//        int currentCount = cells.containsKey(bankNote) ? cells.get(bankNote) : 0;
-//        cells.put(bankNote, currentCount + count);
+       cells.computeIfAbsent(bankNote, key -> new Cell(bankNote)).add(count);
     }
 
     public void reduce(Map<BankNote, Integer> banknoteSet) {
-//        banknoteSet.entrySet().forEach(e -> {
-//            cells.replace(e.getKey(), cells.get(e.getKey()) - e.getValue());
-//        });
+        banknoteSet.entrySet().forEach(e -> {
+            cells.get(e.getKey()).decrease(e.getValue());
+        });
     }
 
     public long getRest() {
-//        return cells.entrySet().stream().mapToLong(e -> e.getKey().getValue() * e.getValue()).sum();
-        return 0;
+        return cells.entrySet().stream().mapToLong(e -> e.getKey().getValue() * e.getValue().getCount()).sum();
     }
 
     public Map<BankNote, Integer> getBanknoteSetForAmount(Integer amount) {
-//        Map<BankNote, Integer> billSet = new HashMap<>();
-//        int currentSum = 0;
-//        int countOfCurrentBill;
-//        int currentRestAmount = amount;
-//
-//        for (Map.Entry<BankNote, Integer> entry : cells.entrySet()) {
-//            BankNote currentBill = entry.getKey();
-//            countOfCurrentBill = getMaxCountBillInCellForAmount(currentBill, currentRestAmount);
-//            if (countOfCurrentBill != 0) {
-//                billSet.put(currentBill, countOfCurrentBill);
-//                currentSum = currentSum + currentBill.getValue() * countOfCurrentBill;
-//            }
-//            if (currentSum == amount) {
-//                return billSet;
-//            }
-//            if (currentSum > amount) break;
-//            currentRestAmount = amount - currentSum;
-//        }
-//        throw new NoBanknoteForDeliveryException("Нет банкнот для выдачи");
-        return null;
-    }
+        Map<BankNote, Integer> billSet = new HashMap<>();
+        int currentSum = 0;
+        int countOfCurrentBanknote;
+        int currentRestAmount = amount;
 
-    private int getMaxCountBillInCellForAmount(BankNote bankNote, int amount) {
-//        int countExistsBill = cells.get(bankNote);  //сколько есть купюр этого номинала
-//        int countNeedBill = amount / bankNote.getValue(); // Сколько нужно купюр этого номинала
-//        return countExistsBill > countNeedBill ? countNeedBill : countExistsBill;
-        return 0;
+        for (Map.Entry<BankNote, Cell> entry : cells.entrySet()) {
+            BankNote currentBanknote = entry.getKey();
+            countOfCurrentBanknote = cells.get(currentBanknote).getMaxCountForAmount(currentRestAmount);
+            if (countOfCurrentBanknote != 0) {
+                billSet.put(currentBanknote, countOfCurrentBanknote);
+                currentSum = currentSum + currentBanknote.getValue() * countOfCurrentBanknote;
+            }
+            if (currentSum == amount) {
+                return billSet;
+            }
+            if (currentSum > amount) break;
+            currentRestAmount = amount - currentSum;
+        }
+        throw new NoBanknoteForDeliveryException("Нет банкнот для выдачи");
     }
 
     public Set<BankNote> getAllTypeOfBanknote(){
@@ -61,7 +50,6 @@ public class StorageImpl2 implements Storage {
     }
 
     public int giveCountBanknote(BankNote bankNote) {
-//        return cells.get(bankNote);
-        return 0;
+        return cells.get(bankNote).getCount();
     }
 }
