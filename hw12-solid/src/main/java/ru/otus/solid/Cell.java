@@ -1,5 +1,7 @@
 package ru.otus.solid;
 
+import ru.otus.solid.exeptions.NoBanknoteForDeliveryException;
+
 public class Cell {
     private int count;
     private BankNote bankNote;
@@ -21,7 +23,11 @@ public class Cell {
     }
 
     public void decrease(int count) {
-        this.count = Math.abs(this.count - count);
+        if (this.count >= count) {
+            this.count = Math.abs(this.count - count);
+        } else {
+            throw new NoBanknoteForDeliveryException("Нет столько банкнот");
+        }
     }
 
     public int getMaxCountForAmount(int amount) {

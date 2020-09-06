@@ -1,40 +1,42 @@
 package ru.otus.solid;
 
+import ru.otus.solid.exeptions.NoBanknoteForDeliveryException;
+
 import java.util.*;
 
 public class StorageImpl implements Storage {
-    private Map<BankNote, Integer> cells;
+    private Map<BankNote, Cell> cells;
 
     public StorageImpl() {
         cells = new TreeMap<>(Comparator.comparingInt(BankNote::getValue).reversed());
     }
 
     public void put(BankNote bankNote, int count) {
-        cells.merge(bankNote, count, (oldVal, newVal) -> oldVal + newVal);
+        cells.computeIfAbsent(bankNote, key -> new Cell(bankNote)).add(count);
     }
 
     public void reduce(Map<BankNote, Integer> banknoteSet) {
         banknoteSet.entrySet().forEach(e -> {
-            cells.replace(e.getKey(), cells.get(e.getKey()) - e.getValue());
+            cells.get(e.getKey()).decrease(e.getValue());
         });
     }
 
     public long getRest() {
-        return cells.entrySet().stream().mapToLong(e -> e.getKey().getValue() * e.getValue()).sum();
+        return cells.entrySet().stream().mapToLong(e -> e.getKey().getValue() * e.getValue().getCount()).sum();
     }
 
     public Map<BankNote, Integer> getBanknoteSetForAmount(Integer amount) {
         Map<BankNote, Integer> billSet = new HashMap<>();
         int currentSum = 0;
-        int countOfCurrentBill;
+        int countOfCurrentBanknote;
         int currentRestAmount = amount;
 
-        for (Map.Entry<BankNote, Integer> entry : cells.entrySet()) {
-            BankNote currentBill = entry.getKey();
-            countOfCurrentBill = getMaxCountBillInCellForAmount(currentBill, currentRestAmount);
-            if (countOfCurrentBill != 0) {
-                billSet.put(currentBill, countOfCurrentBill);
-                currentSum = currentSum + currentBill.getValue() * countOfCurrentBill;
+        for (Map.Entry<BankNote, Cell> entry : cells.entrySet()) {
+            BankNote currentBanknote = entry.getKey();
+            countOfCurrentBanknote = cells.get(currentBanknote).getMaxCountForAmount(currentRestAmount);
+            if (countOfCurrentBanknote != 0) {
+                billSet.put(currentBanknote, countOfCurrentBanknote);
+                currentSum = currentSum + currentBanknote.getValue() * countOfCurrentBanknote;
             }
             if (currentSum == amount) {
                 return billSet;
@@ -45,17 +47,11 @@ public class StorageImpl implements Storage {
         throw new NoBanknoteForDeliveryException("Нет банкнот для выдачи");
     }
 
-    private int getMaxCountBillInCellForAmount(BankNote bankNote, int amount) {
-        int countExistsBill = cells.get(bankNote);  //сколько есть купюр этого номинала
-        int countNeedBill = amount / bankNote.getValue(); // Сколько нужно купюр этого номинала
-        return countExistsBill > countNeedBill ? countNeedBill : countExistsBill;
-    }
-
-    public Set<BankNote> getAllTypeOfBanknote(){
+    public Set<BankNote> getAllTypeOfBanknote() {
         return cells.keySet();
     }
 
     public int giveCountBanknote(BankNote bankNote) {
-        return cells.get(bankNote);
+        return cells.get(bankNote).getCount();
     }
 }

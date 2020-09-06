@@ -17,7 +17,7 @@ public class Atm {
     private Storage storage;
 
     public Atm() {
-        storage = new StorageImpl2();
+        storage = new StorageImpl();
     }
 
     public void putBankNote(BankNote bankNote, int count) {
@@ -34,7 +34,7 @@ public class Atm {
         return storage.getRest();
     }
 
-    public void printAtm(){
+    public void printAtm() {
         storage.getAllTypeOfBanknote()
                 .forEach(bankNote ->
                         System.out.println(bankNote + " " + storage.giveCountBanknote(bankNote)));

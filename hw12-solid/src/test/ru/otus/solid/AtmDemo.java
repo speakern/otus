@@ -13,10 +13,10 @@ public class AtmDemo {
         System.out.println("остаток:" + atm.getRest());
 
         System.out.println("Получить 8900");
-        Map<BankNote, Integer> moneySet =  atm.getMoney(8900);
+        Map<BankNote, Integer> moneySet = atm.getMoney(8900);
 
         System.out.println("Получены следующие банкноты:");
-        for (Map.Entry<BankNote, Integer> entry: moneySet.entrySet()) {
+        for (Map.Entry<BankNote, Integer> entry : moneySet.entrySet()) {
             System.out.println(entry.getKey() + "  " + entry.getValue());
         }
         System.out.println("Остатки банкнот:");
