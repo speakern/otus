@@ -28,11 +28,13 @@ class AtmTest {
 
     @Test
     void getMoney() {
+        Map<BankNote, Integer> moneySet =  atm.getMoney(8900);
         Map<BankNote, Integer> expected = new HashMap<>();
-        expected.put("n", "node");
-        expected.put("c", "c++");
-        expected.put("j", "java");
-        expected.put("p", "python");
+        expected.put(BankNote.RUB5000, 1);
+        expected.put(BankNote.RUB1000, 3);
+        expected.put(BankNote.RUB500, 1);
+        expected.put(BankNote.RUB100, 4);
+        assertEquals(moneySet, expected);
     }
 
     @Test
