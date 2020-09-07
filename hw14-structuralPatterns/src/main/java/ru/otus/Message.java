@@ -76,15 +76,15 @@ public class Message {
     }
 
     public String getField11() {
-        return field10;
+        return field11;
     }
 
     public String getField12() {
-        return field10;
+        return field12;
     }
 
     public String getField13() {
-        return field10;
+        return field13;
     }
 
     @Override
@@ -178,9 +178,9 @@ public class Message {
             this.field8 = field8;
             this.field9 = field9;
             this.field10 = field10;
-            this.field10 = field11;
-            this.field10 = field12;
-            this.field10 = field13;
+            this.field11 = field11;
+            this.field12 = field12;
+            this.field13 = field13;
         }
 
         public Builder field1(String field1) {
