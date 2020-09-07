@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import ru.otus.Message;
 import ru.otus.listener.Listener;
 import ru.otus.processor.Processor;
+import ru.otus.processor.homework.ExceptionProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ComplexProcessorTest {
 
@@ -93,6 +90,22 @@ class ComplexProcessorTest {
 
         //then
         verify(listener, times(1)).onUpdated(eq(message), eq(message));
+    }
+
+    @Test
+    @DisplayName("Тестируем исключение в четную секунду")
+    void evenSecond() {
+
+        var message = new Message.Builder().field7("field7").build();
+
+        var processor1 = mock(ExceptionProcessor.class);
+        when(processor1.getCurrentSeconds()).thenReturn(2L);
+
+        var processor2 = mock(Processor.class);
+        when(processor2.process(eq(message))).thenReturn(message);
+//    Mockito.doReturn(data).
+//    when(dataService).
+//    getData()
     }
 
     private static class TestException extends RuntimeException {
