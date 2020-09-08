@@ -16,7 +16,7 @@ public class ExceptionProcessor implements Processor, Seconds {
     @Override
     public Message process(Message message) {
         if ((getCurrentSeconds() % 2) == 0) {
-            throw new RuntimeException("Четная секунда");
+            throw new EvenSecondsException("Четная секунда");
         }
         return processor.process(message);
     }

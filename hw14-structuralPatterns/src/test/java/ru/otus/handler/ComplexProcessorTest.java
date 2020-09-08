@@ -1,11 +1,14 @@
 package ru.otus.handler;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.Message;
 import ru.otus.listener.Listener;
 import ru.otus.processor.Processor;
+import ru.otus.processor.ProcessorUpperField10;
+import ru.otus.processor.homework.EvenSecondsException;
 import ru.otus.processor.homework.ExceptionProcessor;
 
 import java.util.ArrayList;
@@ -98,14 +101,10 @@ class ComplexProcessorTest {
 
         var message = new Message.Builder().field7("field7").build();
 
-        var processor1 = mock(ExceptionProcessor.class);
-        when(processor1.getCurrentSeconds()).thenReturn(2L);
+        ExceptionProcessor exceptionProcessor = spy(new ExceptionProcessor(new ProcessorUpperField10()));
+        when(exceptionProcessor.getCurrentSeconds()).thenReturn(2L);
 
-        var processor2 = mock(Processor.class);
-        when(processor2.process(eq(message))).thenReturn(message);
-//    Mockito.doReturn(data).
-//    when(dataService).
-//    getData()
+        assertThatExceptionOfType(EvenSecondsException.class).isThrownBy(() -> exceptionProcessor.process(message));
     }
 
     private static class TestException extends RuntimeException {
