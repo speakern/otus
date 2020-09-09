@@ -3,7 +3,7 @@ package ru.otus.solid;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.solid.exeptions.NoBanknoteForDeliveryException;
+import ru.otus.solid.exeptions.NoBanknoteForDeliveryAtmException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ class AtmTest {
 
     @BeforeEach
     public void setUp() {
-        atm = new Atm();
+        atm = new AtmImpl();
         atm.putBankNote(BankNote.RUB100, 4);
         atm.putBankNote(BankNote.RUB500, 1);
         atm.putBankNote(BankNote.RUB5000, 10);
@@ -47,14 +47,14 @@ class AtmTest {
 
     @Test
     void getNotBanknote() throws Exception {
-        Assertions.assertThrows(NoBanknoteForDeliveryException.class,
+        Assertions.assertThrows(NoBanknoteForDeliveryAtmException.class,
                 () -> atm.getMoney(89000));
     }
 
     @Test
     void getNotBanknote100() throws Exception {
         atm.getMoney(400);
-        Assertions.assertThrows(NoBanknoteForDeliveryException.class,
+        Assertions.assertThrows(NoBanknoteForDeliveryAtmException.class,
                 () -> atm.getMoney(400));
     }
 }

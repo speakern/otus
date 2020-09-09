@@ -1,6 +1,6 @@
 package ru.otus.solid;
 
-import ru.otus.solid.exeptions.NoBanknoteForDeliveryException;
+import ru.otus.solid.exeptions.NoBanknoteForDeliveryAtmException;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ public class StorageImpl implements Storage {
     }
 
     public void put(BankNote bankNote, int count) {
-        cells.computeIfAbsent(bankNote, key -> new Cell(bankNote)).add(count);
+        cells.computeIfAbsent(bankNote, key -> new BestCell(bankNote)).add(count);
     }
 
     public void reduce(Map<BankNote, Integer> banknoteSet) {
@@ -44,7 +44,7 @@ public class StorageImpl implements Storage {
             if (currentSum > amount) break;
             currentRestAmount = amount - currentSum;
         }
-        throw new NoBanknoteForDeliveryException("Нет банкнот для выдачи");
+        throw new NoBanknoteForDeliveryAtmException("Нет банкнот для выдачи");
     }
 
     public Set<BankNote> getAllTypeOfBanknote() {

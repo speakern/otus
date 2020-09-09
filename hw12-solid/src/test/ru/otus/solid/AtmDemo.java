@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class AtmDemo {
     public static void main(String[] args) {
-        Atm atm = new Atm();
+        AtmImpl atm = new AtmImpl();
         atm.putBankNote(BankNote.RUB100, 4);
         atm.putBankNote(BankNote.RUB500, 1);
         atm.putBankNote(BankNote.RUB5000, 10);

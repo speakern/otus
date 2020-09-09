@@ -4,15 +4,15 @@ import java.util.Map;
 import java.util.Set;
 
 public interface Storage {
-    public void put(BankNote bankNote, int count);
+    void put(BankNote bankNote, int count);
 
-    public long getRest();
+    long getRest();
 
-    public Map<BankNote, Integer> getBanknoteSetForAmount(Integer amount);
+    Map<BankNote, Integer> getBanknoteSetForAmount(Integer amount);
 
-    public Set<BankNote> getAllTypeOfBanknote();
+    Set<BankNote> getAllTypeOfBanknote();
 
-    public int giveCountBanknote(BankNote bankNote);
+    int giveCountBanknote(BankNote bankNote);
 
-    public void reduce(Map<BankNote, Integer> banknoteSet);
+    void reduce(Map<BankNote, Integer> banknoteSet);
 }
