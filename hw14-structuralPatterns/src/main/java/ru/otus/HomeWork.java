@@ -4,8 +4,8 @@ import ru.otus.handler.ComplexProcessor;
 import ru.otus.listener.ListenerPrinter;
 import ru.otus.listener.homework.ListenerHistory;
 import ru.otus.listener.homework.Pair;
-import ru.otus.processor.homework.ExceptionProcessor;
 import ru.otus.processor.ProcessorUpperField10;
+import ru.otus.processor.homework.ExceptionProcessor;
 import ru.otus.processor.homework.ProcessorExchangeFields;
 
 import java.util.HashMap;
@@ -30,7 +30,9 @@ public class HomeWork {
         var processors = List.of(new ProcessorExchangeFields(),
                 new ExceptionProcessor(new ProcessorUpperField10()));
 
-        var complexProcessor = new ComplexProcessor(processors, (ex) -> {System.out.println(ex);});
+        var complexProcessor = new ComplexProcessor(processors, (ex) -> {
+            System.out.println(ex);
+        });
         Map<String, Pair> storage = new HashMap<>();
         var listenerPrinter = new ListenerPrinter();
         var listenerHistory = new ListenerHistory(storage);

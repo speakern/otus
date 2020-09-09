@@ -164,6 +164,7 @@ public class Message {
         private String field11;
         private String field12;
         private String field13;
+
         public Builder() {
         }
 

@@ -5,7 +5,6 @@ import ru.otus.listener.Listener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ListenerHistory implements Listener {
