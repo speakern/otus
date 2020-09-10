@@ -1,4 +1,4 @@
-package ru.otus.generics;
+package ru.otus.io;
 
 import java.util.*;
 
