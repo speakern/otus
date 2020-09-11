@@ -2,9 +2,10 @@ package ru.otus;
 
 import ru.otus.handler.ComplexProcessor;
 import ru.otus.listener.ListenerPrinter;
+import ru.otus.listener.homework.HistoryMessage;
 import ru.otus.listener.homework.ListenerHistory;
-import ru.otus.listener.homework.Pair;
 import ru.otus.processor.ProcessorUpperField10;
+import ru.otus.processor.homework.CurrentSeconds;
 import ru.otus.processor.homework.ExceptionProcessor;
 import ru.otus.processor.homework.ProcessorExchangeFields;
 
@@ -28,12 +29,12 @@ public class HomeWork {
            из элеменов "to do" создать new ComplexProcessor и обработать сообщение
          */
         var processors = List.of(new ProcessorExchangeFields(),
-                new ExceptionProcessor(new ProcessorUpperField10()));
+                new ExceptionProcessor(new ProcessorUpperField10(), new CurrentSeconds()));
 
         var complexProcessor = new ComplexProcessor(processors, (ex) -> {
             System.out.println(ex);
         });
-        Map<String, Pair> storage = new HashMap<>();
+        Map<Long, HistoryMessage> storage = new HashMap<>();
         var listenerPrinter = new ListenerPrinter();
         var listenerHistory = new ListenerHistory(storage);
         complexProcessor.addListener(listenerPrinter);
@@ -54,8 +55,8 @@ public class HomeWork {
         complexProcessor.handle(message1);
         complexProcessor.handle(message2);
 
-        storage.entrySet().forEach(e -> System.out.println(String.format("oldMsg:%s, newMsg:%s",
-                e.getValue().getOldMessage(), e.getValue().getNewMessage())));
+        storage.forEach((key, value) -> System.out.println(String.format("date:%s, oldMsg:%s, newMsg:%s",
+                value.getTimeToString(), value.getOldMessage(), value.getNewMessage())));
 
         complexProcessor.removeListener(listenerPrinter);
         complexProcessor.removeListener(listenerHistory);

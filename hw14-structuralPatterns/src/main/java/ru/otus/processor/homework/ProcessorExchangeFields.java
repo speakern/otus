@@ -9,7 +9,9 @@ public class ProcessorExchangeFields implements Processor {
 
     @Override
     public Message process(Message message) {
-        Message newMessage = message.toBuilder().field11(message.getField13()).build();
-        return newMessage.toBuilder().field13(message.getField11()).build();
+        return message.toBuilder()
+                .field11(message.getField13())
+                .field13(message.getField11())
+                .build();
     }
 }

@@ -1,13 +1,13 @@
 package ru.otus.handler;
 
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.Message;
 import ru.otus.listener.Listener;
 import ru.otus.processor.Processor;
 import ru.otus.processor.ProcessorUpperField10;
+import ru.otus.processor.homework.CurrentSeconds;
 import ru.otus.processor.homework.EvenSecondsException;
 import ru.otus.processor.homework.ExceptionProcessor;
 
@@ -101,8 +101,9 @@ class ComplexProcessorTest {
 
         var message = new Message.Builder().field7("field7").build();
 
-        ExceptionProcessor exceptionProcessor = spy(new ExceptionProcessor(new ProcessorUpperField10()));
-        when(exceptionProcessor.getCurrentSeconds()).thenReturn(2L);
+        var seconds = mock(CurrentSeconds.class);
+        when(seconds.getCurrentSeconds()).thenReturn(2L);
+        ExceptionProcessor exceptionProcessor = new ExceptionProcessor(new ProcessorUpperField10(), seconds);
 
         assertThatExceptionOfType(EvenSecondsException.class).isThrownBy(() -> exceptionProcessor.process(message));
     }
