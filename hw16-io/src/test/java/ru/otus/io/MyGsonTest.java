@@ -1,97 +1,111 @@
 package ru.otus.io;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MyGsonTest {
-
-    private List<String> list;
-    private List<String> listArray;
-    private List<String> listSource;
-    private List<String> listSourceArray;
+    Gson gson = new Gson();
+    MyGson myGson = new MyGson();
 
     @BeforeEach
     public void setUp() {
-//        list = new Gson();
-//        listArray = new ArrayList();
-//        fillIn(list, 20, 0);
-//        fillIn(listArray, 20, 0);
-//
-//        listSource = new Gson();
-//        listSourceArray = new ArrayList();
-//        fillIn(listSource, 10, 30);
-//        fillIn(listSourceArray, 10, 30);
-//
-//        listCat = new Gson();
-//        listCatArray = new ArrayList();
-//        fillInCat(listCat, 20, 0);
-//        fillInCat(listCatArray, 20, 0);
-//
-//        listCatSource = new Gson();
-//        listCatSourceArray = new ArrayList();
-//        fillInCat(listCatSource, 10, 30);
-//        fillInCat(listCatSourceArray, 10, 30);
 
     }
 
     @Test
-    void addAll() {
-        Collections.addAll(list, "6", "7");
-        Collections.addAll(listArray, "6", "7");
-        assertThat(list).usingElementComparator(Comparator.naturalOrder()).isEqualTo(listArray);
+    @DisplayName("Тестируем простой объект")
+    void checkSimpleObject() {
+        BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434);
+        String myJson = myGson.toJson(originalObj);
+        //String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+
+        BagOfPrimitives newObj = gson.fromJson(myJson, BagOfPrimitives.class);
+        System.out.println(newObj);
+
+        assertThat(newObj).isEqualTo(originalObj);
     }
 
     @Test
-    void copy() {
-        Collections.copy(list, listSource);
-        Collections.copy(listArray, listSourceArray);
-        assertThat(list).usingElementComparator(Comparator.naturalOrder()).isEqualTo(listArray);
+    @DisplayName("Тестируем примитивный тип")
+    void checkSimpleType() {
+        int originalObj = 23;
+//        String myJson = myGson.toJson(originalObj);
+        String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+
+        int newObj = gson.fromJson(myJson, int.class);
+
+        assertThat(newObj).isEqualTo(originalObj);
     }
 
     @Test
-    void sort() {
-        Collections.copy(list, listSource);
-        Collections.copy(listArray, listSourceArray);
-        Collections.sort(list, NUMBER);
-        Collections.sort(listArray, NUMBER);
+    @DisplayName("Тестируем Wrapper")
+    void checkWrapperType() {
+        Integer originalIntegerObj = 23;
+        String myJsonInteger = myGson.toJson(originalIntegerObj);
+
+        String originalStringObj = "Строка";
+        String myJsonString = myGson.toJson(originalStringObj);
+
+        Boolean originalBooleanObj = true;
+        String myJsonBoolean = myGson.toJson(originalBooleanObj);
+
+        Integer newObjInteger = gson.fromJson(myJsonInteger, Integer.class);
+        String newObjString = gson.fromJson(myJsonString, String.class);
+        Boolean newObjBoolean = gson.fromJson(myJsonBoolean, Boolean.class);
+
+        assertThat(newObjString).isEqualTo(originalStringObj);
+        assertThat(newObjInteger).isEqualTo(originalIntegerObj);
+        assertThat(newObjBoolean).isEqualTo(originalBooleanObj);
     }
 
     @Test
-    void addAllCat() {
-//        Collections.addAll(listCat, new HomeCat("Пушистик"), new HomeCat("Пушистик2"));
-//        Collections.addAll(listCatArray,  new HomeCat("Пушистик"), new HomeCat("Пушистик2"));
-//        assertThat(listCat).usingElementComparator(CAT).isEqualTo(listCatArray);
+    @DisplayName("Тестируем массив примитивных типов")
+    void checkArraySimpleType() {
+        int[] originalObj = new int[] { 10, 100 };
+        String myJson = myGson.toJson(originalObj);
+        int[] newObj = gson.fromJson(myJson, int[].class);
+
+        assertThat(newObj).isEqualTo(originalObj);
     }
 
     @Test
-    void copyCat() {
-//        Collections.copy(listCat, listCatSource);
-//        Collections.copy(listCatArray, listCatSourceArray);
-//        assertThat(listCat).usingElementComparator(CAT).isEqualTo(listCatArray);
+    @DisplayName("Тестируем коллекции: ArrayList")
+    void checkCollectionType() {
+        BagOfPrimitivesAndArray obj = new BagOfPrimitivesAndArray(22, "test", 10);
+
+        ArrayList<BagOfPrimitivesAndArray> originalList = new ArrayList<>();
+        originalList.add(obj);
+        originalList.add(obj);
+        System.out.println(originalList);
+
+  //      String json = myGson.toJson(originalList);
+        String json = gson.toJson(originalList);
+        System.out.println(json);
+
+        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArray>>(){}.getType();
+        ArrayList<BagOfPrimitivesAndArray> newList = gson.fromJson(json, type);
+
+        System.out.println(originalList.equals(newList));
+        System.out.println(newList);
+
+        assertThat(newList).isEqualTo(originalList);
     }
 
-    @Test
-    void sortCat() {
-//        Collections.copy(listCat, listCatSource);
-//        Collections.copy(listCatArray, listCatSourceArray);
-//        Collections.sort(listCat, CAT);
-//        Collections.sort(listCatArray, CAT);
-//        assertThat(listCat).usingElementComparator(CAT).isEqualTo(listCatArray);
-    }
+//    @Test
+//    void copy() {
+//        Collections.copy(list, listSource);
+//        Collections.copy(listArray, listSourceArray);
+//        assertThat(list).usingElementComparator(Comparator.naturalOrder()).isEqualTo(listArray);
+//    }
 
-    public static Comparator<String> NUMBER = Comparator.comparingInt(Integer::valueOf);
-
- //   public static Comparator<Cat> CAT = Comparator.comparing(Cat::getName);
-
-    private static void fillIn(List<String> list, int size, int shift) {
-        for (int i = 0; i < size; i++) {
-            list.add(String.valueOf(i + shift));
-        }
-    }
 }

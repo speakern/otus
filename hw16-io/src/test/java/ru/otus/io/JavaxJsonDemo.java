@@ -13,7 +13,7 @@ import java.util.Map;
 public class JavaxJsonDemo {
     public static void main(String[] args) {
         navigateTree(create());
-        readFromFile();
+      //  readFromFile();
     }
 
     private static JsonObject create() {
