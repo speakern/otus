@@ -1,6 +1,10 @@
 package ru.otus.io;
 
 import com.google.gson.Gson;
+
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 /**
 Cвой json object writer
         Цель: Научиться сериализовывать объект в json, попрактиковаться в разборе структуры объекта.
@@ -31,18 +35,15 @@ Cвой json object writer
 
 public class MyGsonDemo {
     public static void main(String[] args) {
-    //    Gson это делает так:
-        Gson gson = new Gson();
-//        BagOfPrimitives obj = new BagOfPrimitives(22, "test", 10);
-//        String json = gson.toJson(obj);
+        BagOfPrimitives obj = new BagOfPrimitives(22, "test", 10, 343.233);
 
-    //    Сделайте так:
-        MyGson myGson = new MyGson();
-        BagOfPrimitives obj = new BagOfPrimitives(22, "test", 10, 2323.111);
-        String myJson = myGson.toJson(obj);
+        Class<? extends Object> clazz = obj.getClass();
+        Field[] fieldsAll = clazz.getDeclaredFields();
+        Arrays.stream(fieldsAll).forEach(field -> {
+            System.out.println(field.getType() + "    " + field.getName() + "  "
+                    + field.getType().isPrimitive());
+           // Integer.TYPE.
+        });
 
-    //    Должно получиться:
-        BagOfPrimitives obj2 = gson.fromJson(myJson, BagOfPrimitives.class);
-        System.out.println(obj.equals(obj2));
     }
 }

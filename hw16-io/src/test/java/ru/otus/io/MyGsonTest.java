@@ -21,7 +21,7 @@ class MyGsonTest {
     }
 
     @Test
-    @DisplayName("Тестируем простой объект")
+    @DisplayName("Тестируем простой объект c примитивами")
     void checkSimpleObject() {
         BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434);
         String myJson = myGson.toJson(originalObj);
@@ -29,6 +29,20 @@ class MyGsonTest {
         System.out.println(myJson);
 
         BagOfPrimitives newObj = gson.fromJson(myJson, BagOfPrimitives.class);
+        System.out.println(newObj);
+
+        assertThat(newObj).isEqualTo(originalObj);
+    }
+
+    @Test
+    @DisplayName("Тестируем простой объект с вложенным объектом")
+    void checkSimpleObjectWithNestedObject() {
+        BagOfPrimitivesAndObject originalObj = new BagOfPrimitivesAndObject(22, "test", 10, 23.3434);
+        //String myJson = myGson.toJson(originalObj);
+        String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+
+        BagOfPrimitivesAndObject newObj = gson.fromJson(myJson, BagOfPrimitivesAndObject.class);
         System.out.println(newObj);
 
         assertThat(newObj).isEqualTo(originalObj);
