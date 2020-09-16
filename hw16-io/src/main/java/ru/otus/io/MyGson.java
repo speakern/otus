@@ -51,11 +51,7 @@ public class MyGson {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
         int lengthArray = Array.getLength(object);
         for (int i = 0; i < lengthArray; i++) {
-            try {
-                addPrimitiveMemberToJsonArray(jsonArray, Array.get(object, i));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+             addPrimitiveMemberToJsonArray(jsonArray, Array.get(object, i));
         }
         return jsonArray;
     }
@@ -100,36 +96,23 @@ public class MyGson {
         return false;
     }
 
-
     private void addPrimitiveFieldToJson(JsonObjectBuilder jsonObj, Field field, Object object) throws IllegalAccessException {
         field.setAccessible(true);
         if ((field.getType() == int.class) || (field.getType() == Integer.class)
-        || (field.getType() == long.class) || (field.getType() == Long.class)
-        || (field.getType() == byte.class) || (field.getType() == Byte.class)
-        || (field.getType() == short.class) || (field.getType() == Short.class))
+                || (field.getType() == long.class) || (field.getType() == Long.class)
+                || (field.getType() == byte.class) || (field.getType() == Byte.class)
+                || (field.getType() == short.class) || (field.getType() == Short.class))
         {
             jsonObj.add(field.getName(), (long) field.get(object));
         }
-//        if ((field.getType() == long.class) || (field.getType() == Long.class)){
-//            jsonObj.add(field.getName(), (long) field.get(object));
-//        }
-//        if ((field.getType() == byte.class) || (field.getType() == Byte.class)) {
-//            jsonObj.add(field.getName(), (byte) field.get(object));
-//        }
-//        if ((field.getType() == short.class) || (field.getType() == Short.class)) {
-//            jsonObj.add(field.getName(), (short) field.get(object));
-//        }
         if ((field.getType() == boolean.class) || (field.getType() == Boolean.class)) {
             jsonObj.add(field.getName(), (boolean) field.get(object));
         }
         if ((field.getType() == char.class) || (field.getType() == Character.class)) {
             jsonObj.add(field.getName(), (char) field.get(object));
         }
-//        if ((field.getType() == float.class) || (field.getType() == Float.class)) {
-//            jsonObj.add(field.getName(), (float) field.get(object));
-//        }
         if ((field.getType() == double.class) || (field.getType() == Double.class)
-        || (field.getType() == float.class) || (field.getType() == Float.class))
+                || (field.getType() == float.class) || (field.getType() == Float.class))
         {
             jsonObj.add(field.getName(), (double) field.get(object));
         }
@@ -138,7 +121,33 @@ public class MyGson {
         }
     }
 
-    private void addPrimitiveMemberToJsonArray(JsonArrayBuilder jsonArray, Object object) throws IllegalAccessException {
+
+//    private void addPrimitiveTo(AddToJson objToJson) throws IllegalAccessException {
+//
+//        if ((objToJson.getClass() == int.class) || (field.getType() == Integer.class)
+//        || (field.getType() == long.class) || (field.getType() == Long.class)
+//        || (field.getType() == byte.class) || (field.getType() == Byte.class)
+//        || (field.getType() == short.class) || (field.getType() == Short.class))
+//        {
+//            jsonObj.add(field.getName(), (long) field.get(object));
+//        }
+//        if ((field.getType() == boolean.class) || (field.getType() == Boolean.class)) {
+//            jsonObj.add(field.getName(), (boolean) field.get(object));
+//        }
+//        if ((field.getType() == char.class) || (field.getType() == Character.class)) {
+//            jsonObj.add(field.getName(), (char) field.get(object));
+//        }
+//        if ((field.getType() == double.class) || (field.getType() == Double.class)
+//        || (field.getType() == float.class) || (field.getType() == Float.class))
+//        {
+//            jsonObj.add(field.getName(), (double) field.get(object));
+//        }
+//        if (field.getType() == String.class) {
+//            jsonObj.add(field.getName(), (String) field.get(object));
+//        }
+//    }
+
+    private void addPrimitiveMemberToJsonArray(JsonArrayBuilder jsonArray, Object object) {
         if ((object.getClass() == int.class) || (object.getClass() == Integer.class)) {
             jsonArray.add((int) object);
         }

@@ -154,8 +154,8 @@ class MyGsonTest {
     @Test
     @DisplayName("Тестируем массив примитивных типов")
     void checkArraySimpleType() {
-        //int[] originalObj = new int[] { 10, 100 };
-        String[] originalObj = new String[] { "1212", "2323" };
+        int[] originalObj = new int[] { 10, 100 };
+        //String[] originalObj = new String[] { "1212", "2323" };
         String myJson = myGson.toJson(originalObj);
         //String myJson = gson.toJson(originalObj);
         System.out.println(myJson);
