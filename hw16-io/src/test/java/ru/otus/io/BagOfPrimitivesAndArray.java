@@ -22,10 +22,11 @@ public class BagOfPrimitivesAndArray {
 
     @Override
     public String toString() {
-        return "BagOfPrimitives{" +
+        return "BagOfPrimitivesAndArray{" +
                 "value1=" + value1 +
                 ", value2='" + value2 + '\'' +
                 ", value3=" + value3 +
+                ", bagOfPrimitivesList=" + bagOfPrimitivesList +
                 '}';
     }
 

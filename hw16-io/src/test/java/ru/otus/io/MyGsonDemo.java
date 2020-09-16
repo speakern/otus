@@ -35,7 +35,8 @@ Cвой json object writer
 
 public class MyGsonDemo {
     public static void main(String[] args) {
-        BagOfPrimitives obj = new BagOfPrimitives(22, "test", 10, 343.233);
+        //BagOfPrimitives obj = new BagOfPrimitives(22, "test", 10, 343.233);
+        int[] obj = {10,100};
 
         Class<? extends Object> clazz = obj.getClass();
         Field[] fieldsAll = clazz.getDeclaredFields();
@@ -44,6 +45,11 @@ public class MyGsonDemo {
                     + field.getType().isPrimitive());
            // Integer.TYPE.
         });
+
+//        int[] array = {10,100};
+
+
+        //int[] array1 =  new int[10];
 
     }
 }

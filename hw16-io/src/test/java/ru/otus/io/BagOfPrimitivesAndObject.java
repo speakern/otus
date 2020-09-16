@@ -21,11 +21,13 @@ public class BagOfPrimitivesAndObject {
 
     @Override
     public String toString() {
-        return "BagOfPrimitives{" +
+        return "BagOfPrimitivesAndObject{" +
                 "value1=" + value1 +
                 ", value2='" + value2 + '\'' +
                 ", value3=" + value3 +
                 ", value4=" + value4 +
+                ", bagOfPrimitives=" + bagOfPrimitives +
+                ", emptyClass=" + emptyClass +
                 '}';
     }
 
