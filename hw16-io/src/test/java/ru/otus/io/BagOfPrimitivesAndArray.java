@@ -15,9 +15,9 @@ public class BagOfPrimitivesAndArray {
         this.value2 = value2;
         this.value3 = value3;
         this.bagOfPrimitivesList = new ArrayList<>();
-        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 10, 12.2));
-        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 20, 23.12121212));
-        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 30, 24.323233));
+        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 10, 12.2, 'd'));
+        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 20, 23.12121212, 's'));
+        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 30, 24.323233, 's'));
     }
 
     @Override

@@ -8,36 +8,57 @@ public class AddToObject implements AddToJson{
     private Field field;
     private Object object;
 
-    public AddToObject(JsonObjectBuilder jsonObj, Field field, Object object) {
+    public AddToObject(JsonObjectBuilder jsonObj, Field field, Object object) throws IllegalAccessException {
         this.jsonObj = jsonObj;
         this.field = field;
-        this.object = object;
         field.setAccessible(true);
+        this.object = field.get(object);
     }
 
     @Override
-    public void addLong() throws IllegalAccessException {
-        jsonObj.add(field.getName(), (long) field.get(object));
+    public void addByte() {
+        jsonObj.add(field.getName(), (byte) object);
     }
 
     @Override
-    public void addBoolean() throws IllegalAccessException {
-        jsonObj.add(field.getName(), (boolean) field.get(object));
+    public void addShort() {
+        jsonObj.add(field.getName(), (short) object);
     }
 
     @Override
-    public void addChar() throws IllegalAccessException {
-        jsonObj.add(field.getName(), (char) field.get(object));
+    public void addInteger(){
+        jsonObj.add(field.getName(), (int) object);
     }
 
     @Override
-    public void addDouble() throws IllegalAccessException {
-        jsonObj.add(field.getName(), (double) field.get(object));
+    public void addLong(){
+        jsonObj.add(field.getName(), (long) object);
     }
 
     @Override
-    public void addString() throws IllegalAccessException {
-        jsonObj.add(field.getName(), (String) field.get(object));
+    public void addBoolean(){
+        jsonObj.add(field.getName(), (boolean) object);
+    }
+
+    @Override
+    public void addChar(){
+        Character ch = (Character) object;
+        jsonObj.add(field.getName(), ch.toString());
+    }
+
+    @Override
+    public void addDouble(){
+        jsonObj.add(field.getName(), (double) object);
+    }
+
+    @Override
+    public void addFloat() {
+        jsonObj.add(field.getName(), (float) object);
+    }
+
+    @Override
+    public void addString(){
+        jsonObj.add(field.getName(), (String) object);
     }
 
     @Override

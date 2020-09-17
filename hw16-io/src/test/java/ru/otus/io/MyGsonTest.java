@@ -22,7 +22,7 @@ class MyGsonTest {
     @Test
     @DisplayName("Тестируем простой объект c примитивами")
     void checkSimpleObject() {
-        BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434);
+        BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434, 'w');
         String myJson = myGson.toJson(originalObj);
         //String myJson = gson.toJson(originalObj);
         System.out.println(myJson);
@@ -53,8 +53,8 @@ class MyGsonTest {
     void checkSimpleObjectWithNestedArrayList() {
         BagOfPrimitivesAndArray originalObj = new BagOfPrimitivesAndArray(22, "test", 10);
         System.out.println(originalObj);
-        //String myJson = myGson.toJson(originalObj);
-        String myJson = gson.toJson(originalObj);
+        String myJson = myGson.toJson(originalObj);
+        //String myJson = gson.toJson(originalObj);
         System.out.println(myJson);
 
         BagOfPrimitivesAndArray newObj = gson.fromJson(myJson, BagOfPrimitivesAndArray.class);
@@ -114,6 +114,13 @@ class MyGsonTest {
         System.out.println(myJson);
         boolean newBooleanObj = gson.fromJson(myJson, boolean.class);
         assertThat(newBooleanObj).isEqualTo(originalBooleanObj);
+
+        char originalCharObj = 'w';
+        myJson = myGson.toJson(originalCharObj);
+        //String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+        char newCharObj = gson.fromJson(myJson, char.class);
+        assertThat(newCharObj).isEqualTo(originalCharObj);
     }
 
     @Test
@@ -155,18 +162,60 @@ class MyGsonTest {
     @DisplayName("Тестируем массив примитивных типов")
     void checkArraySimpleType() {
         int[] originalObj = new int[] { 10, 100 };
-        //String[] originalObj = new String[] { "1212", "2323" };
         String myJson = myGson.toJson(originalObj);
         //String myJson = gson.toJson(originalObj);
         System.out.println(myJson);
         int[] newObj = gson.fromJson(myJson, int[].class);
-
         assertThat(newObj).isEqualTo(originalObj);
+
+        double[] originalDoubleObj = new double[] { 12.12, 23.23 };
+        myJson = myGson.toJson(originalDoubleObj);
+        //String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+        double[] newDoubleObj = gson.fromJson(myJson, double[].class);
+        assertThat(newDoubleObj).isEqualTo(originalDoubleObj);
+
+        char[] originalCharObj = new char[] { 'e', 'q' };
+        myJson = myGson.toJson(originalCharObj);
+        //myJson = gson.toJson(originalCharObj);
+        System.out.println(myJson);
+        char[] newCharObj = gson.fromJson(myJson, char[].class);
+        assertThat(newCharObj).isEqualTo(originalCharObj);
+
+        String[] originalStringObj = new String[] { "1212", "2323" };
+        myJson = myGson.toJson(originalStringObj);
+        //String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+        String[] newStringObj = gson.fromJson(myJson, String[].class);
+        assertThat(newStringObj).isEqualTo(originalStringObj);
     }
 
     @Test
     @DisplayName("Тестируем коллекции: ArrayList")
     void checkCollectionType() {
+        BagOfPrimitivesAndArray obj = new BagOfPrimitivesAndArray(22, "test", 10);
+
+        ArrayList<BagOfPrimitivesAndArray> originalList = new ArrayList<>();
+        originalList.add(obj);
+        originalList.add(obj);
+        System.out.println(originalList);
+
+        String json = myGson.toJson(originalList);
+        //String json = gson.toJson(originalList);
+        System.out.println(json);
+
+        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArray>>(){}.getType();
+        ArrayList<BagOfPrimitivesAndArray> newList = gson.fromJson(json, type);
+
+        System.out.println(originalList.equals(newList));
+        System.out.println(newList);
+
+        assertThat(newList).isEqualTo(originalList);
+    }
+
+    @Test
+    @DisplayName("Тестируем коллекции: ArrayList cо сложным объектом")
+    void checkCollectionTypeWithHardObject() {
         BagOfPrimitivesAndArray obj = new BagOfPrimitivesAndArray(22, "test", 10);
 
         ArrayList<BagOfPrimitivesAndArray> originalList = new ArrayList<>();

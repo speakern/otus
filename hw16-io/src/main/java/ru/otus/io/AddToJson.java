@@ -1,10 +1,14 @@
 package ru.otus.io;
 
 public interface AddToJson {
-    void addLong() throws IllegalAccessException;
-    void addBoolean() throws IllegalAccessException;
-    void addChar() throws IllegalAccessException;
-    void addDouble() throws IllegalAccessException;
-    void addString() throws IllegalAccessException;
+    void addByte();
+    void addShort();
+    void addInteger();
+    void addLong();
+    void addBoolean();
+    void addChar();
+    void addDouble();
+    void addFloat();
+    void addString();
     Object getObject();
 }

@@ -15,7 +15,7 @@ public class BagOfPrimitivesAndObject {
         this.value2 = value2;
         this.value3 = value3;
         this.value4 = value4;
-        this.bagOfPrimitives = new BagOfPrimitives(22, "test", 20, 23.12121212);
+        this.bagOfPrimitives = new BagOfPrimitives(22, "test", 20, 23.12121212, 'e');
         this.emptyClass = new EmptyClass();
     }
 

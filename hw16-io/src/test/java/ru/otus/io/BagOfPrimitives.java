@@ -7,12 +7,14 @@ public class BagOfPrimitives {
     private final String value2;
     private final int value3;
     private final double value4;
+    private final char value5;
 
-    BagOfPrimitives(int value1, String value2, int value3, double value4) {
+    public BagOfPrimitives(Integer value1, String value2, int value3, double value4, char value5) {
         this.value1 = value1;
         this.value2 = value2;
         this.value3 = value3;
         this.value4 = value4;
+        this.value5 = value5;
     }
 
     @Override
@@ -22,6 +24,7 @@ public class BagOfPrimitives {
                 ", value2='" + value2 + '\'' +
                 ", value3=" + value3 +
                 ", value4=" + value4 +
+                ", value5=" + value5 +
                 '}';
     }
 
@@ -30,14 +33,15 @@ public class BagOfPrimitives {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BagOfPrimitives that = (BagOfPrimitives) o;
-        return value1 == that.value1 &&
-                value3 == that.value3 &&
+        return value3 == that.value3 &&
                 Double.compare(that.value4, value4) == 0 &&
+                value5 == that.value5 &&
+                Objects.equals(value1, that.value1) &&
                 Objects.equals(value2, that.value2);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value1, value2, value3, value4);
+        return Objects.hash(value1, value2, value3, value4, value5);
     }
 }
