@@ -5,15 +5,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GsonDemo {
     public static void main(String[] args) {
         Gson gson = new Gson();
-        BagOfPrimitivesAndArray obj = new BagOfPrimitivesAndArray(22, "test", 10);
+        BagOfPrimitivesAndArrayList obj = new BagOfPrimitivesAndArrayList(22, "test", 10);
 
-        ArrayList<BagOfPrimitivesAndArray> list = new ArrayList<>();
+        ArrayList<BagOfPrimitivesAndArrayList> list = new ArrayList<>();
         list.add(obj);
         list.add(obj);
         System.out.println(list);
@@ -21,8 +19,8 @@ public class GsonDemo {
         String json = gson.toJson(list);
         System.out.println(json);
 
-        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArray>>(){}.getType();
-        ArrayList<BagOfPrimitivesAndArray> list2 = gson.fromJson(json, type);
+        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArrayList>>(){}.getType();
+        ArrayList<BagOfPrimitivesAndArrayList> list2 = gson.fromJson(json, type);
 
         System.out.println(list.equals(list2));
         System.out.println(list2);

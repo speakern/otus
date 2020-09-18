@@ -1,33 +1,19 @@
 package ru.otus.io;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
 
-public class BagOfPrimitivesAndArray {
+public class BagOfPrimitivesAndArray{
     private final int value1;
     private final String value2;
     private final int value3;
-    private final List<BagOfPrimitives> bagOfPrimitivesList;
+    private final int[] array;
 
-    BagOfPrimitivesAndArray(int value1, String value2, int value3) {
+    public BagOfPrimitivesAndArray(int value1, String value2, int value3) {
         this.value1 = value1;
         this.value2 = value2;
         this.value3 = value3;
-        this.bagOfPrimitivesList = new ArrayList<>();
-        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 10, 12.2, 'd'));
-        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 20, 23.12121212, 's'));
-        this.bagOfPrimitivesList.add(new BagOfPrimitives(22, "test", 30, 24.323233, 's'));
-    }
-
-    @Override
-    public String toString() {
-        return "BagOfPrimitivesAndArray{" +
-                "value1=" + value1 +
-                ", value2='" + value2 + '\'' +
-                ", value3=" + value3 +
-                ", bagOfPrimitivesList=" + bagOfPrimitivesList +
-                '}';
+        this.array = new int[] {12, 20};
     }
 
     @Override
@@ -38,11 +24,23 @@ public class BagOfPrimitivesAndArray {
         return value1 == that.value1 &&
                 value3 == that.value3 &&
                 Objects.equals(value2, that.value2) &&
-                Objects.equals(bagOfPrimitivesList, that.bagOfPrimitivesList);
+                Arrays.equals(array, that.array);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value1, value2, value3, bagOfPrimitivesList);
+        int result = Objects.hash(value1, value2, value3);
+        result = 31 * result + Arrays.hashCode(array);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BagOfPrimitivesAndArray{" +
+                "value1=" + value1 +
+                ", value2='" + value2 + '\'' +
+                ", value3=" + value3 +
+                ", array=" + Arrays.toString(array) +
+                '}';
     }
 }

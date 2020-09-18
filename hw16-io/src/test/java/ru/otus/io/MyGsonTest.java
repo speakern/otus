@@ -51,6 +51,21 @@ class MyGsonTest {
     @Test
     @DisplayName("Тестируем простой объект с вложенным ArrayList")
     void checkSimpleObjectWithNestedArrayList() {
+        BagOfPrimitivesAndArrayList originalObj = new BagOfPrimitivesAndArrayList(22, "test", 10);
+        System.out.println(originalObj);
+        String myJson = myGson.toJson(originalObj);
+        //String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+
+        BagOfPrimitivesAndArrayList newObj = gson.fromJson(myJson, BagOfPrimitivesAndArrayList.class);
+        System.out.println(newObj);
+
+        assertThat(newObj).isEqualTo(originalObj);
+    }
+
+    @Test
+    @DisplayName("Тестируем простой объект с вложенным массивом")
+    void checkSimpleObjectWithNestedArray() {
         BagOfPrimitivesAndArray originalObj = new BagOfPrimitivesAndArray(22, "test", 10);
         System.out.println(originalObj);
         String myJson = myGson.toJson(originalObj);
@@ -191,11 +206,47 @@ class MyGsonTest {
     }
 
     @Test
-    @DisplayName("Тестируем коллекции: ArrayList")
-    void checkCollectionType() {
-        BagOfPrimitivesAndArray obj = new BagOfPrimitivesAndArray(22, "test", 10);
+    @DisplayName("Тестируем массив объектов")
+    void checkArrayObjectType() {
+        BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434, 'w');
+        BagOfPrimitives[] originalArray = new BagOfPrimitives[2];
+        originalArray[0] = originalObj;
+        originalArray[1] = originalObj;
 
-        ArrayList<BagOfPrimitivesAndArray> originalList = new ArrayList<>();
+        String myJson = myGson.toJson(originalArray);
+        //String myJson = gson.toJson(originalArray);
+        System.out.println(myJson);
+        BagOfPrimitives[] newArray = gson.fromJson(myJson, BagOfPrimitives[].class);
+        assertThat(newArray).isEqualTo(originalArray);
+    }
+
+    @Test
+    @DisplayName("Тестируем коллекции: ArrayList c примитивами")
+    void checkCollectionTypeArrayListWithPrimitives() {
+        ArrayList<String> originalList = new ArrayList<>();
+        originalList.add("start");
+        originalList.add("end");
+        System.out.println(originalList);
+
+        String json = myGson.toJson(originalList);
+       // String json = gson.toJson(originalList);
+        System.out.println(json);
+
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        ArrayList<BagOfPrimitivesAndArrayList> newList = gson.fromJson(json, type);
+
+        System.out.println(originalList.equals(newList));
+        System.out.println(newList);
+
+        assertThat(newList).isEqualTo(originalList);
+    }
+
+    @Test
+    @DisplayName("Тестируем коллекции: ArrayList")
+    void checkCollectionTypeArrayList() {
+        BagOfPrimitivesAndArrayList obj = new BagOfPrimitivesAndArrayList(22, "test", 10);
+
+        ArrayList<BagOfPrimitivesAndArrayList> originalList = new ArrayList<>();
         originalList.add(obj);
         originalList.add(obj);
         System.out.println(originalList);
@@ -204,8 +255,8 @@ class MyGsonTest {
         //String json = gson.toJson(originalList);
         System.out.println(json);
 
-        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArray>>(){}.getType();
-        ArrayList<BagOfPrimitivesAndArray> newList = gson.fromJson(json, type);
+        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArrayList>>(){}.getType();
+        ArrayList<BagOfPrimitivesAndArrayList> newList = gson.fromJson(json, type);
 
         System.out.println(originalList.equals(newList));
         System.out.println(newList);
@@ -216,9 +267,9 @@ class MyGsonTest {
     @Test
     @DisplayName("Тестируем коллекции: ArrayList cо сложным объектом")
     void checkCollectionTypeWithHardObject() {
-        BagOfPrimitivesAndArray obj = new BagOfPrimitivesAndArray(22, "test", 10);
+        BagOfPrimitivesAndArrayList obj = new BagOfPrimitivesAndArrayList(22, "test", 10);
 
-        ArrayList<BagOfPrimitivesAndArray> originalList = new ArrayList<>();
+        ArrayList<BagOfPrimitivesAndArrayList> originalList = new ArrayList<>();
         originalList.add(obj);
         originalList.add(obj);
         System.out.println(originalList);
@@ -227,8 +278,8 @@ class MyGsonTest {
         //String json = gson.toJson(originalList);
         System.out.println(json);
 
-        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArray>>(){}.getType();
-        ArrayList<BagOfPrimitivesAndArray> newList = gson.fromJson(json, type);
+        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArrayList>>(){}.getType();
+        ArrayList<BagOfPrimitivesAndArrayList> newList = gson.fromJson(json, type);
 
         System.out.println(originalList.equals(newList));
         System.out.println(newList);

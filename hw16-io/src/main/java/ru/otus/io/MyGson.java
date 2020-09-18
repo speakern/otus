@@ -5,6 +5,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 public class MyGson {
 
@@ -14,43 +15,35 @@ public class MyGson {
         }
         if (isPrimitive(obj.getClass())) {
             return obj.toString();
+
         } else if (obj.getClass().isArray()) {
             return createArrayToJson(obj).build().toString();
+
+        } else if (obj instanceof Collection) {
+            return createCollectionToJson((Collection) obj).build().toString();
+
         } else {
             return createObjectToJson(obj).build().toString();
         }
-  //{"value1":22,"value2":"test","value3":10,"value4":23.3434,"bagOfPrimitives":{"value1":22,"value2":"test","value3":20,"value4":23.12121212}}
-//        jsonObject = Json.createObjectBuilder()
-//                .add("value1", 22)
-//                .add("value2", "test")
-//                .add("value3", 10)
-//                .add("value4", 23.3434)
-//                .add("bagOfPrimitives",
-//                        Json.createObjectBuilder()
-//                                .add("value1", 22)
-//                                .add("value2", "test")
-//                                .add("value3", 10)
-//                                .add("value4", 23.3434));
-//        jsonObject = Json.createObjectBuilder()
-//                .add("value1", 22)
-//                .add("value2", "test")
-//                .add("value3", 10)
-//                .add("bagOfPrimitives",
-//                        Json.createArrayBuilder()
-//                                .add(Json.createObjectBuilder()
-//                                        .add("type", "home")
-//                                        .add("number", "222-222-2222")))
-  //              .build();
-
- //       System.out.println("jsonObject:" + jsonObject + "\n");
-
     }
+
+    private JsonArrayBuilder createCollectionToJson(Collection object) {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+        for (Object obj: object) {
+            addPrimitiveTo(new AddToArray(jsonArray, obj));
+        }
+        return jsonArray;
+    }
+
     private JsonArrayBuilder createArrayToJson(Object object) {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
         int lengthArray = Array.getLength(object);
         for (int i = 0; i < lengthArray; i++) {
-             //addPrimitiveMemberToJsonArray(jsonArray, Array.get(object, i));
-            addPrimitiveTo(new AddToArray(jsonArray, Array.get(object, i)));
+            if (isPrimitive(object.getClass().getComponentType())) {
+                addPrimitiveTo(new AddToArray(jsonArray, Array.get(object, i)));
+            } else {
+                addObjectToJson(jsonArray, Array.get(object, i));
+            }
         }
         return jsonArray;
     }
@@ -60,12 +53,14 @@ public class MyGson {
         Class<? extends Object> clazz = object.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            field.setAccessible(true);
             try {
                 if (isPrimitive(field.getType())) {
-                    //addPrimitiveFieldToJson(jsonObj, field, object);
                     addPrimitiveTo(new AddToObject(jsonObj, field, object));
-                } else {
-                    field.setAccessible(true);
+                } else if (field.getType().isArray()) {
+                    addArrayToJson(jsonObj, field, field.get(object));
+                }
+                else {
                     addObjectToJson(jsonObj, field, field.get(object));
                 }
             } catch (IllegalAccessException e) {
@@ -77,6 +72,16 @@ public class MyGson {
 
     private JsonObjectBuilder addObjectToJson(JsonObjectBuilder jsonObj, Field objectField, Object object) {
         JsonObjectBuilder jsonObjectBuilder = jsonObj.add(objectField.getName(), createObjectToJson(object));
+        return jsonObjectBuilder;
+    }
+
+    private JsonArrayBuilder addObjectToJson(JsonArrayBuilder jsonObj, Object object) {
+        JsonArrayBuilder jsonArrayBuilder = jsonObj.add(createObjectToJson(object));
+        return jsonArrayBuilder;
+    }
+
+    private JsonObjectBuilder addArrayToJson(JsonObjectBuilder jsonObj, Field objectField, Object object) {
+        JsonObjectBuilder jsonObjectBuilder = jsonObj.add(objectField.getName(), createArrayToJson(object));
         return jsonObjectBuilder;
     }
 
