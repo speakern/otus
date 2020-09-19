@@ -3,16 +3,16 @@ package ru.otus.io;
 import javax.json.JsonObjectBuilder;
 import java.lang.reflect.Field;
 
-public class AddToObject implements AddToJson{
+public class AddPrimitiveToObject implements AddToPrimitive {
     private JsonObjectBuilder jsonObj;
     private Field field;
     private Object object;
 
-    public AddToObject(JsonObjectBuilder jsonObj, Field field, Object object) throws IllegalAccessException {
+    public AddPrimitiveToObject(JsonObjectBuilder jsonObj, Field field, Object object) throws IllegalAccessException {
         this.jsonObj = jsonObj;
         this.field = field;
         field.setAccessible(true);
-        this.object = field.get(object);
+        this.object = object;
     }
 
     @Override
