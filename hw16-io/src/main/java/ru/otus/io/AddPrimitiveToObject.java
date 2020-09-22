@@ -4,11 +4,11 @@ import javax.json.JsonObjectBuilder;
 import java.lang.reflect.Field;
 
 public class AddPrimitiveToObject implements AddToPrimitive {
-    private JsonObjectBuilder jsonObj;
-    private Field field;
-    private Object object;
+    private final JsonObjectBuilder jsonObj;
+    private final Field field;
+    private final Object object;
 
-    public AddPrimitiveToObject(JsonObjectBuilder jsonObj, Field field, Object object) throws IllegalAccessException {
+    public AddPrimitiveToObject(JsonObjectBuilder jsonObj, Field field, Object object){
         this.jsonObj = jsonObj;
         this.field = field;
         field.setAccessible(true);

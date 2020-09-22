@@ -3,8 +3,8 @@ package ru.otus.io;
 import javax.json.JsonArrayBuilder;
 
 public class AddPrimitiveToArray implements AddToPrimitive {
-    private JsonArrayBuilder jsonArray;
-    private Object object;
+    private final JsonArrayBuilder jsonArray;
+    private final Object object;
 
     public AddPrimitiveToArray(JsonArrayBuilder jsonArray, Object object) {
         this.jsonArray = jsonArray;
