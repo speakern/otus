@@ -1,10 +1,5 @@
 package ru.otus.jdbc;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Optional;
-
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +7,10 @@ import ru.otus.core.model.User;
 import ru.otus.h2.DataSourceH2;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Optional;
 
 /**
  * @author sergey
@@ -36,7 +35,7 @@ public class ExecutorDemo {
                     userId, rs -> {
                         try {
                             if (rs.next()) {
-                                return new User(rs.getLong("id"), rs.getString("name"));
+                                return new User(rs.getLong("id"), rs.getString("name"), 12);
                             }
                         } catch (SQLException e) {
                             logger.error(e.getMessage(), e);

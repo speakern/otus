@@ -1,19 +1,19 @@
 package ru.otus.jdbc.dao;
 
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.core.dao.UserDao;
 import ru.otus.core.dao.UserDaoException;
-import ru.otus.jdbc.DbExecutorImpl;
 import ru.otus.core.model.User;
 import ru.otus.core.sessionmanager.SessionManager;
+import ru.otus.jdbc.DbExecutorImpl;
 import ru.otus.jdbc.sessionmanager.SessionManagerJdbc;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Optional;
 
 // этот класс не должен быть в домашней работе
 public class UserDaoJdbc implements UserDao {
@@ -34,7 +34,7 @@ public class UserDaoJdbc implements UserDao {
                     id, rs -> {
                         try {
                             if (rs.next()) {
-                                return new User(rs.getLong("id"), rs.getString("name"));
+                                return new User(rs.getLong("id"), rs.getString("name"), rs.getInt("age"));
                             }
                         } catch (SQLException e) {
                             logger.error(e.getMessage(), e);
