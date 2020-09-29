@@ -30,6 +30,18 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T>{
 //        entityClassMetaData.getFieldsWithoutId().forEach(System.out::println);
         System.out.println("Получить поле с аннотацией ID");
         System.out.println(entityClassMetaData.getIdField());
+        System.out.println("Все поля без ID:");
+        entityClassMetaData.getFieldsWithoutId().forEach(System.out::println);
+        System.out.println("Получить имя");
+        System.out.println(entityClassMetaData.getName());
+        System.out.println("---------------------------------------------------");
+        System.out.println("Получить select всех элементов");
+        System.out.println(entitySQLMetaData.getSelectAllSql());
+        System.out.println("Получить select где ID = ");
+        System.out.println(entitySQLMetaData.getSelectByIdSql());
+        System.out.println("Получить insert");
+        System.out.println(entitySQLMetaData.getInsertSql());
+
     }
 
     @Override
