@@ -3,9 +3,11 @@ package ru.otus;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.otus.core.dao.UserDao;
 import ru.otus.core.model.User;
 import ru.otus.h2.DataSourceH2;
 import ru.otus.jdbc.DbExecutorImpl;
+import ru.otus.jdbc.dao.UserDaoJdbcMapper;
 import ru.otus.jdbc.mapper.JdbcMapper;
 import ru.otus.jdbc.mapper.JdbcMapperImpl;
 import ru.otus.jdbc.sessionmanager.SessionManagerJdbc;
@@ -62,7 +64,7 @@ public class HomeWork {
 // Работа с пользователем
         DbExecutorImpl<User> dbExecutor = new DbExecutorImpl<>();
         JdbcMapper<User> jdbcMapperUser = new JdbcMapperImpl<>(sessionManager, dbExecutor, User.class);
-       // UserDao userDao = new UserDaoJdbcMapper(jdbcMapperUser);
+        UserDao userDao = new UserDaoJdbcMapper(jdbcMapperUser);
 
 // Код дальше должен остаться, т.е. userDao должен использоваться
         //var dbServiceUser = new DbServiceUserImpl(userDao);
