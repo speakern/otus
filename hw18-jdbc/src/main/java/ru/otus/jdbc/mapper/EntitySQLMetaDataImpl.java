@@ -5,8 +5,6 @@ import java.util.List;
 
 public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
 
-//    private final static String SELECT_BY_ID = "Select";
-
     private final EntityClassMetaData<T> entityClassMetaData;
 
     public EntitySQLMetaDataImpl(EntityClassMetaData<T> entityClassMetaData) {
@@ -25,12 +23,11 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
 
     @Override
     public String getSelectByIdSql() {
-        return getSelectAllSql() + " where id = ?";
+        return getSelectAllSql() + getConditionWhereId();
     }
 
     @Override
     public String getInsertSql() {
-        //"insert into user(name) values (?)"
         StringBuilder sqlInsert = new StringBuilder();
         sqlInsert.append("insert into ");
         sqlInsert.append(entityClassMetaData.getName());
@@ -50,7 +47,8 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
         sqlUpdate.append(entityClassMetaData.getName());
         sqlUpdate.append(" set ");
         sqlUpdate.append(getFields(entityClassMetaData.getFieldsWithoutId(), " = ?"));
-        sqlUpdate.append(" where id = ?");
+        // sqlUpdate.append(" where id = ?");
+        sqlUpdate.append(getConditionWhereId());
         return sqlUpdate.toString();
     }
 
@@ -58,12 +56,20 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
         StringBuilder str = new StringBuilder();
         int lengthArray = fieldList.size();
         int count = 0;
-        for (Field field: fieldList) {
+        for (Field field : fieldList) {
             count++;
             str.append(field.getName());
             str.append(extended);
             if (count != lengthArray) str.append(", ");
         }
+        return str.toString();
+    }
+
+    private String getConditionWhereId() {
+        StringBuilder str = new StringBuilder();
+        str.append(" where ");
+        str.append(entityClassMetaData.getIdField().getName());
+        str.append(" = ?");
         return str.toString();
     }
 

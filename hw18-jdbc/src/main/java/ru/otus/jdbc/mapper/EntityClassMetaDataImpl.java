@@ -24,16 +24,16 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     public Constructor<T> getConstructor() {
 
         Constructor<?>[] constructors = tClass.getConstructors();
-        return (Constructor<T> ) constructors[0];
+        return (Constructor<T>) constructors[0];
     }
 
     @Override
     public Field getIdField() {
         List<Field> allFields = getAllFields();
         Field fieldWithId = null;
-        for (Field field: allFields) {
+        for (Field field : allFields) {
             Annotation[] annotations = field.getDeclaredAnnotations();
-            for (Annotation annotation: annotations) {
+            for (Annotation annotation : annotations) {
                 String currentAnnotation = annotation.toString();
                 if (currentAnnotation.equals("@ru.otus.annotations.Id()")) {
                     fieldWithId = field;
@@ -55,7 +55,7 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
         List<Field> listField = getAllFields();
         Field idField = getIdField();
         List<Field> resultList = new ArrayList<>();
-        for (Field field: listField) {
+        for (Field field : listField) {
             if (!field.getName().equals(idField.getName())) {
                 resultList.add(field);
             }

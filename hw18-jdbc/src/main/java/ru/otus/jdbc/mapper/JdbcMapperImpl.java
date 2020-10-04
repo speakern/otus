@@ -9,15 +9,14 @@ import ru.otus.jdbc.sessionmanager.SessionManagerJdbc;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class JdbcMapperImpl<T> implements JdbcMapper<T>{
+public class JdbcMapperImpl<T> implements JdbcMapper<T> {
     private static final Logger logger = LoggerFactory.getLogger(JdbcMapperImpl.class);
 
     private final SessionManagerJdbc sessionManager;
@@ -36,44 +35,44 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T>{
         this.dbExecutor = dbExecutor;
         this.entityClassMetaData = new EntityClassMetaDataImpl<>(tClass);
         this.entitySQLMetaData = new EntitySQLMetaDataImpl(this.entityClassMetaData);
-
         this.selectAllSqlQuery = this.entitySQLMetaData.getSelectAllSql();
         this.selectByIdSqlQuety = this.entitySQLMetaData.getSelectByIdSql();
         this.insertSqlQuery = this.entitySQLMetaData.getInsertSql();
         this.updateSqlQuery = this.entitySQLMetaData.getUpdateSql();
 
-//        System.out.println("Все поля:");
-//        entityClassMetaData.getAllFields().forEach(System.out::println);
-//        System.out.println("Конструктор:");
-//        System.out.println(entityClassMetaData.getConstructor());
-//        System.out.println("Получить поле с аннотацией ID");
-//        System.out.println(entityClassMetaData.getIdField());
-//        System.out.println("Все поля без ID:");
-//        entityClassMetaData.getFieldsWithoutId().forEach(System.out::println);
-//        System.out.println("Получить имя");
-//        System.out.println(entityClassMetaData.getName());
-//        System.out.println("---------------------------------------------------");
-//        System.out.println("Получить select всех элементов");
-//        System.out.println(selectAllSqlQuery);
-//        System.out.println("Получить select где ID = ");
-//        System.out.println(selectByIdSqlQuety);
-//        System.out.println("Получить insert");
-//        System.out.println(insertSqlQuery);
-//        System.out.println("Получить update");
-//        System.out.println(updateSqlQuery);
+        logger.info("Все поля:");
+        entityClassMetaData.getAllFields().forEach(e -> logger.info(e.toString()));
+        logger.info("Конструктор:");
+        logger.info(entityClassMetaData.getConstructor().toString());
+        logger.info("Получить поле с аннотацией ID");
+        logger.info(entityClassMetaData.getIdField().toString());
+        logger.info("Все поля без ID:");
+        entityClassMetaData.getFieldsWithoutId().forEach(e -> logger.info(e.toString()));
+        logger.info("Получить имя");
+        logger.info(entityClassMetaData.getName());
+        logger.info("---------------------------------------------------");
+        logger.info("Получить select всех элементов");
+        logger.info(selectAllSqlQuery);
+        logger.info("Получить select где ID = ");
+        logger.info(selectByIdSqlQuety);
+        logger.info("Получить insert");
+        logger.info(insertSqlQuery);
+        logger.info("Получить update");
+        logger.info(updateSqlQuery);
 
     }
 
     @Override
     public long insert(T objectData) {
         try {
-            return dbExecutor.executeInsert(getConnection(), insertSqlQuery,
-                    Collections.singletonList(user.getName()));
-//            return jdbcMapper.insert(user);
+            List<Object> params = entityClassMetaData.getFieldsWithoutId().stream()
+                    .map((e) -> getFieldValue(objectData, e.getName()))
+                    .collect(Collectors.toList());
+            long result = dbExecutor.executeInsert(getConnection(), insertSqlQuery, params);
+            return result;
         } catch (Exception e) {
             throw new UserDaoException(e);
         }
-        return 0;
     }
 
     @Override
@@ -88,28 +87,28 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T>{
 
     @Override
     public T findById(Object id, Class<T> clazz) {
-        Map<String, Object> queryValues = new HashMap<>();
+        Optional<T> optionalT = Optional.empty();
         try {
-            dbExecutor.executeSelect(getConnection(), selectByIdSqlQuety,
+            optionalT = dbExecutor.executeSelect(getConnection(), selectByIdSqlQuety,
                     id, rs -> {
                         try {
                             if (rs.next()) {
-                                List<Field> fieldList = entityClassMetaData.getFieldsWithoutId();
-                                //return new User(rs.getLong("id"), rs.getString("name"));
-                                for (Field field: fieldList) {
-                                    queryValues.put(field.getName(), rs.getObject(field.getName()));
+                                List<Field> fieldList = entityClassMetaData.getAllFields();
+                                List<Object> listObjects = new ArrayList<>();
+                                for (Field field : fieldList) {
+                                    listObjects.add(rs.getObject(field.getName()));
                                 }
-                                return null;
+                                return createObject(listObjects);
                             }
                         } catch (SQLException e) {
                             logger.error(e.getMessage(), e);
                         }
                         return null;
                     });
-            return null;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+        if (!optionalT.isEmpty()) return optionalT.get();
         return null;
     }
 
@@ -121,24 +120,24 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T>{
         return sessionManager.getCurrentSession().getConnection();
     }
 
-    private T createObject(Class<T> clazz, Map<String, Object> queryValues ) {
+    private T createObject(List<Object> listObjects) {
         Constructor<T> constructor = entityClassMetaData.getConstructor();
         T object = null;
         try {
-            int countPatameters = queryValues.size();
-            Object[] objects= new Object[countPatameters];
-            Parameter[] parameters = constructor.getParameters();
-            for (int i = 0; i < countPatameters; i++) {
-                System.out.println(parameters[i].getName());
-            }
-            object = constructor.newInstance(objects);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+            object = constructor.newInstance(listObjects.toArray());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return object;
+    }
+
+    public Object getFieldValue(Object object, String name) {
+        try {
+            var field = object.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            return field.get(object);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

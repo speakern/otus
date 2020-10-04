@@ -4,20 +4,24 @@ import ru.otus.core.dao.UserDao;
 import ru.otus.core.model.User;
 import ru.otus.core.sessionmanager.SessionManager;
 import ru.otus.jdbc.mapper.JdbcMapper;
+import ru.otus.jdbc.sessionmanager.SessionManagerJdbc;
 
 import java.util.Optional;
 
 public class UserDaoJdbcMapper implements UserDao {
 
     private final JdbcMapper<User> jdbcMapper;
+    private final SessionManagerJdbc sessionManager;
 
-    public UserDaoJdbcMapper(JdbcMapper<User> jdbcMapper) {
+    public UserDaoJdbcMapper(SessionManagerJdbc sessionManager, JdbcMapper<User> jdbcMapper) {
         this.jdbcMapper = jdbcMapper;
+        this.sessionManager = sessionManager;
     }
 
     @Override
     public Optional<User> findById(long id) {
-        return Optional.ofNullable(jdbcMapper.findById(id, User.class));
+        User user = jdbcMapper.findById(id, User.class);
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -27,7 +31,7 @@ public class UserDaoJdbcMapper implements UserDao {
 
     @Override
     public SessionManager getSessionManager() {
-        return null;
+        return sessionManager;
     }
 }
 
