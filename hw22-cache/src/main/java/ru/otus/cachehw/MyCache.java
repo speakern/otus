@@ -1,9 +1,5 @@
 package ru.otus.cachehw;
 
-import com.sun.jdi.Value;
-import ru.otus.references.ReferenceDemo;
-
-import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
