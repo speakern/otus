@@ -20,29 +20,28 @@ import org.slf4j.LoggerFactory;
  */
 public class HWCacheDemo {
     private static final Logger logger = LoggerFactory.getLogger(HWCacheDemo.class);
-    HwCache<Integer, Integer> cache = new MyCache<>();
+    HwCache<Object, Object> cache = new MyCache<>();
 
     public static void main(String[] args) {
         HWCacheDemo hwCacheDemo = new HWCacheDemo();
         hwCacheDemo.demo();
-        System.gc();
-        hwCacheDemo.demo();
-        System.gc();
         System.out.println("Finish");
     }
 
     private void demo() {
 
         // пример, когда Idea предлагает упростить код, при этом может появиться "спец"-эффект
-        HwListener<Integer, Integer> listener = new HwListener<Integer, Integer>() {
+        HwListener<Object, Object> listener = new HwListener<Object, Object>() {
             @Override
-            public void notify(Integer key, Integer value, String action) {
+            public void notify(Object key, Object value, String action) {
                 logger.info("key:{}, value:{}, action: {}", key, value, action);
             }
         };
 
         cache.addListener(listener);
-        cache.put(1, 1);
+        cache.put(new Object(), new Object());
+
+        System.gc();
 
         logger.info("getValue:{}", cache.get(1));
         cache.remove(1);
