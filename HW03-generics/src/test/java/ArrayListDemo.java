@@ -1,7 +1,7 @@
-import ru.otus.generics.DIYArrayList;
-import ru.otus.generics.entries.Cat;
-import ru.otus.generics.entries.HomeCat;
-import ru.otus.generics.entries.WildCat;
+import ru.otus.io.DIYArrayList;
+import ru.otus.io.entries.Cat;
+import ru.otus.io.entries.HomeCat;
+import ru.otus.io.entries.WildCat;
 
 import java.util.*;
 

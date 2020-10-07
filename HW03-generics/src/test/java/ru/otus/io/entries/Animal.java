@@ -1,4 +1,4 @@
-package ru.otus.generics.entries;
+package ru.otus.io.entries;
 
 /**
  * @author sergey
