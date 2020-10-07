@@ -22,6 +22,7 @@ public class DbServiceUserImpl implements DBServiceUser {
             sessionManager.beginSession();
             try {
                 var userId = userDao.insertUser(user);
+                user = new User(userId, user.getName(), user.getAge());
                 sessionManager.commitSession();
 
                 logger.info("created user: {}", userId);

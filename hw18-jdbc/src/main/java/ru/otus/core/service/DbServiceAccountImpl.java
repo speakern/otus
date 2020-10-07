@@ -22,6 +22,7 @@ public class DbServiceAccountImpl implements DBServiceAccount {
             sessionManager.beginSession();
             try {
                 var accountId = accountDao.insertAccount(account);
+                account = new Account(accountId, account.getType(), account.getRest());
                 sessionManager.commitSession();
 
                 logger.info("created account: {}", accountId);

@@ -77,12 +77,12 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
 
     @Override
     public void update(T objectData) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void insertOrUpdate(T objectData) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
