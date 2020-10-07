@@ -29,7 +29,7 @@ public class DbServiceUserImpl implements DBServiceUser {
                 long userId = user.getId();
                 sessionManager.commitSession();
                 cache.put(userId, user);
-                logger.info("created user: {}", userId);
+                logger.info("created user ID: {}", userId);
                 return userId;
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);

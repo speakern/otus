@@ -14,6 +14,7 @@ import ru.otus.hibernate.dao.UserDaoHibernate;
 import ru.otus.hibernate.sessionmanager.SessionManagerHibernate;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class HomeWorkHibernate {
@@ -26,17 +27,19 @@ public class HomeWorkHibernate {
         DBServiceUser dbServiceUser = initDbService();
 
         User user = createUser("Вася");
+        List<Long> longList = new ArrayList<>();
+        long id;
+        int count = 500;  //  Количество вставляемых в БД записей
 
-        for (int i = 0; i < 1000; i++) {
-            dbServiceUser.saveUser(createUser("Вася" + i));
+//Запись в БД
+        for (int i = 0; i < count; i++) {
+            id = dbServiceUser.saveUser(createUser("Вася" + i));
+            longList.add(id);
         }
-
-        long id = dbServiceUser.saveUser(user);
-
-        System.gc();
-
-        Optional<User> mayBeCreatedUser = dbServiceUser.getUser(id);
-        mayBeCreatedUser = dbServiceUser.getUser(id);
+//Чтение из БД. По логам видно, сколько было обращений к БД.
+        for (int i = 0; i < count; i++) {
+            dbServiceUser.getUser(longList.get(i));
+        }
 
     }
 
