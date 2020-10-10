@@ -2,20 +2,14 @@ package ru.otus.server;
 
 import com.google.gson.Gson;
 import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import ru.otus.dao.UserDao;
-import ru.otus.helpers.FileSystemHelper;
+import ru.otus.services.DBServiceUser;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.services.UserAuthService;
 import ru.otus.servlet.AuthorizationFilter;
 import ru.otus.servlet.LoginServlet;
-import ru.otus.servlet.UsersApiServlet;
-import ru.otus.servlet.UsersServlet;
 
 import java.util.Arrays;
 
@@ -24,10 +18,10 @@ public class UsersWebServerWithFilterBasedSecurity extends UsersWebServerSimple 
 
     public UsersWebServerWithFilterBasedSecurity(int port,
                                                  UserAuthService authService,
-                                                 UserDao userDao,
+                                                 DBServiceUser dbServiceUser,
                                                  Gson gson,
                                                  TemplateProcessor templateProcessor) {
-        super(port, userDao, gson, templateProcessor);
+        super(port, dbServiceUser, gson, templateProcessor);
         this.authService = authService;
     }
 

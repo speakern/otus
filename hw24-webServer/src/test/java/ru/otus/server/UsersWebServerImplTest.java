@@ -2,13 +2,18 @@ package ru.otus.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.jupiter.api.*;
-import ru.otus.dao.UserDao;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import ru.otus.model.User;
+import ru.otus.services.DBServiceUser;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.services.UserAuthService;
 
-import java.net.*;
+import java.net.HttpCookie;
+import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -42,15 +47,15 @@ class UsersWebServerImplTest {
         http = HttpClient.newHttpClient();
 
         TemplateProcessor templateProcessor = mock(TemplateProcessor.class);
-        UserDao userDao = mock(UserDao.class);
+        DBServiceUser dbServiceUser = mock(DBServiceUser.class);
         UserAuthService userAuthService = mock(UserAuthService.class);
 
         given(userAuthService.authenticate(DEFAULT_USER_LOGIN, DEFAULT_USER_PASSWORD)).willReturn(true);
         given(userAuthService.authenticate(INCORRECT_USER_LOGIN, DEFAULT_USER_PASSWORD)).willReturn(false);
-        given(userDao.findById(DEFAULT_USER_ID)).willReturn(Optional.of(DEFAULT_USER));
+        given(dbServiceUser.getUser(DEFAULT_USER_ID)).willReturn(Optional.of(DEFAULT_USER));
 
         gson = new GsonBuilder().serializeNulls().create();
-        webServer = new UsersWebServerWithFilterBasedSecurity(WEB_SERVER_PORT, userAuthService, userDao, gson, templateProcessor);
+        webServer = new UsersWebServerWithFilterBasedSecurity(WEB_SERVER_PORT, userAuthService, dbServiceUser, gson, templateProcessor);
         webServer.start();
     }
 
