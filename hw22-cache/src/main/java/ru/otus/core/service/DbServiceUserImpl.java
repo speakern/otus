@@ -10,11 +10,11 @@ import ru.otus.core.sessionmanager.SessionManager;
 import java.util.Optional;
 
 public class DbServiceUserImpl implements DBServiceUser {
-    private static Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
 
     private final UserDao userDao;
 
-    private MyCache<Long, User> cache = new MyCache<>();
+    private final MyCache<Long, User> cache = new MyCache<>();
 
     public DbServiceUserImpl(UserDao userDao) {
         this.userDao = userDao;

@@ -39,13 +39,14 @@ public class HWCacheDemo {
         };
 
         cache.addListener(listener);
-        cache.put(new Object(), new Object());
+        Object object = new Object();
+        cache.put(object, new Object());
 
         System.gc();
 
         logger.info("getValue:{}", cache.get(1));
-        cache.remove(1);
-    //    cache.removeListener(listener);
-
+        cache.remove(object);
+        cache.removeListener(listener);
+        System.out.println("finish");
     }
 }

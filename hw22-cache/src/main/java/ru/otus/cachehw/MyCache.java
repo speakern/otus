@@ -1,10 +1,7 @@
 package ru.otus.cachehw;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * @author sergey
@@ -13,31 +10,25 @@ import java.util.WeakHashMap;
 public class MyCache<K, V> implements HwCache<K, V> {
 //Надо реализовать эти методы
     private final Map<K, V> map = new WeakHashMap<>();
-    private List<WeakReference<HwListener<K, V>>> listeners = new ArrayList<>();
+    private final List<WeakReference<HwListener<K, V>>> listeners = new ArrayList<>();
 
     @Override
     public void put(K key, V value) {
         map.put(key, value);
-        listeners.forEach(listener -> {
-            if (listener.get() != null) listener.get().notify(key, value, "put");
-        });
+        notify(key, value, "put");
     }
 
     @Override
     public void remove(K key) {
         V value = map.get(key);
         map.remove(key);
-        for (WeakReference<HwListener<K, V>> listener : listeners) {
-            if (listener.get() != null) listener.get().notify(key, value, "remove");
-        }
+        notify(key, value, "remove");
     }
 
     @Override
     public V get(K key) {
         V value = map.get(key);
-        for (WeakReference<HwListener<K, V>> listener : listeners) {
-            if (listener.get() != null) listener.get().notify(key, value, "get");
-        }
+        notify(key, value, "get");
         return value;
     }
 
@@ -48,12 +39,24 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     @Override
     public void removeListener(HwListener<K, V> listener) {
-        WeakReference<HwListener<K, V>> removeListener = null;
-        for (WeakReference<HwListener<K, V>> weakListener : listeners) {
-            if (weakListener.get().equals(listener)) {
-                removeListener = weakListener;
+        int removeIndex = 0;
+        for (int i = 0; i < listeners.size(); i++) {
+            if (listeners.get(i).get().equals(listener)) {
+                removeIndex = i;
+                break;
             }
         }
-        listeners.remove(removeListener);
+        listeners.remove(removeIndex);
     }
+
+    private void notify(K key, V value, String actionName) {
+        try {
+            listeners.forEach(listener -> {
+                if (listener.get() != null) listener.get().notify(key, value, actionName);
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }
