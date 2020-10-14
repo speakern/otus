@@ -1,11 +1,15 @@
 package ru.otus.helpers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public final class FileSystemHelper {
+    private static Logger logger = LoggerFactory.getLogger(FileSystemHelper.class);
 
     private FileSystemHelper() {
     }
@@ -18,7 +22,7 @@ public final class FileSystemHelper {
         }
 
         if (path == null) {
-            System.out.println("Local file not found, looking into resources");
+            logger.info("Local file not found, looking into resources");
             path = Optional.ofNullable(FileSystemHelper.class.getClassLoader().getResource(fileOrResourceName))
                     .orElseThrow(() -> new RuntimeException(String.format("File \"%s\" not found", fileOrResourceName))).toExternalForm();
 
