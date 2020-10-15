@@ -6,6 +6,7 @@ import ru.otus.appcontainer.api.AppComponent;
 import ru.otus.appcontainer.api.AppComponentsContainer;
 import ru.otus.appcontainer.api.AppComponentsContainerConfig;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -15,40 +16,52 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     private final List<Object> appComponents = new ArrayList<>();
     private final Map<String, Object> appComponentsByName = new HashMap<>();
 
-    public AppComponentsContainerImpl(Class<?> initialConfigClass) {
+    public AppComponentsContainerImpl(Class<?> initialConfigClass) throws Exception {
         processConfig(initialConfigClass);
     }
 
-    private void processConfig(Class<?> configClass) {
+    private void processConfig(Class<?> configClass) throws Exception {
         checkConfigClass(configClass);
         // You code here...
 
+        Constructor<?> constructor = configClass.getConstructor();
+        Object object = constructor.newInstance();
+
         Method[] methodsAll = configClass.getDeclaredMethods();
+        Set<Method> methods = new TreeSet<>(getMethodComparator());
 
-        Map<String, Method> methods = new TreeMap<>();
+//        for (Method method : methodsAll) {
+//            System.out.println(method.getName());
+//            System.out.println(((Class) method.getGenericReturnType()).getSimpleName());
+//            Type[] types = method.getGenericParameterTypes();
+//
+//            for (int i = 0; i < types.length; i++) {
+//                System.out.println(((Class) types[i]).getSimpleName());
+//            }
+//
+//            AppComponent annotation = method.getDeclaredAnnotation(AppComponent.class);
+//            if (annotation != null) {
+//                System.out.println(annotation.toString() + "  " + annotation.name() + "   " + annotation.order());
+//            }
+//        }
+            methods.addAll(Arrays.asList(methodsAll));
 
-        Arrays.stream(methodsAll).forEach(
-                method -> {
-                    System.out.println(method.getName());
-                    AppComponent annotation = method.getDeclaredAnnotation(AppComponent.class);
-                    if (annotation != null) {
-                        System.out.println(annotation.toString() + "  " + annotation.name() + "   " + annotation.order());
-                    }
-                    //cells = new TreeMap<>(Comparator.comparingInt(BankNote::getValue).reversed());
-//                    for (int i = 0; i < annotations.length; i++) {
-//                        System.out.println(annotations[i].toString());
-//                    }
-                });
+        for (Method method : methods) {
+            System.out.println(method.getName());
+            System.out.println(((Class) method.getGenericReturnType()).getSimpleName());
+        }
 
     }
 
-    private Comparator<Method> getComparator(){
+    private Comparator<Method> getMethodComparator(){
         return new Comparator<Method>() {
             @Override
             public int compare(Method m1, Method m2) {
                 AppComponent annotationM1 = m1.getDeclaredAnnotation(AppComponent.class);
                 AppComponent annotationM2 = m2.getDeclaredAnnotation(AppComponent.class);
-
+                if ((annotationM1 != null) && (annotationM2 != null)) {
+                    return Integer.compare(annotationM1.order(), annotationM2.order());
+                }
                 return 0;
             }
         };
