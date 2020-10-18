@@ -15,7 +15,9 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     private static final Logger logger = LoggerFactory.getLogger(AppComponentsContainerImpl.class);
     private final List<Object> appComponents = new ArrayList<>();
-    private final Map<String, Object> appComponentsByName = new HashMap<>();
+    private final Map<String, Object> appComponentsByNameClass = new HashMap<>();
+    private final Map<String, String> classNameByInterfaceName = new HashMap<>();
+    private final Map<String, String> classNameByAnnotationName = new HashMap<>();
 
     public AppComponentsContainerImpl(Class<?> initialConfigClass) throws Exception {
         processConfig(initialConfigClass);
@@ -23,7 +25,6 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     private void processConfig(Class<?> configClass) throws Exception {
         checkConfigClass(configClass);
-        // You code here...
 
         Constructor<?> constructor = configClass.getConstructor();
         Object object = constructor.newInstance();
@@ -31,29 +32,10 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         Method[] methodsAll = configClass.getDeclaredMethods();
         Set<Method> methods = new TreeSet<>(getMethodComparator());
 
-//        for (Method method : methodsAll) {
-//            System.out.println(method.getName());
-//            System.out.println(((Class) method.getGenericReturnType()).getSimpleName());
-//            Type[] types = method.getGenericParameterTypes();
-//
-//            for (int i = 0; i < types.length; i++) {
-//                System.out.println(((Class) types[i]).getSimpleName());
-//            }
-//
-//            AppComponent annotation = method.getDeclaredAnnotation(AppComponent.class);
-//            if (annotation != null) {
-//                System.out.println(annotation.toString() + "  " + annotation.name() + "   " + annotation.order());
-//            }
-//        }
-            methods.addAll(Arrays.asList(methodsAll));
+        methods.addAll(Arrays.asList(methodsAll));
 
         for (Method method : methods) {
             if (method.getDeclaredAnnotation(AppComponent.class) == null) continue;
-
-            System.out.println(method.getName());
-           // System.out.println(((Class) method.getGenericReturnType()).getSimpleName());
-
-            String classMethodName = ((Class) method.getGenericReturnType()).getSimpleName();
 
             Type[] types = method.getGenericParameterTypes();
             Object resultObject = null;
@@ -61,9 +43,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                 int sizeArray = types.length;
                 Object[] args = new Object[sizeArray];
                 for (int i = 0; i < types.length; i++) {
-                    //System.out.println("    " + ((Class) types[i]).getSimpleName());
-                    String classParameterName = ((Class) types[i]).getSimpleName();
-                    args[i] = appComponentsByName.get(classParameterName);
+                    args[i] = getAppComponent((Class) types[i]);
                 }
                 if (!checkArrayWithNull(args)) {
                     resultObject = method.invoke(object, args);
@@ -72,13 +52,24 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
                 resultObject = method.invoke(object);
             }
 
-            if (resultObject != null) appComponentsByName.put(classMethodName, resultObject);
+            if (resultObject != null) {
+                saveComponent(resultObject, method);
+            }
         }
-        System.out.println("finish");
-        appComponentsByName.entrySet().forEach(e -> System.out.println(e.getKey() + "  " + e.getValue()));
+        appComponentsByNameClass.entrySet().forEach(e -> logger.info("{} - {}", e.getKey(), e.getValue()));
     }
 
-    private Comparator<Method> getMethodComparator(){
+    private void saveComponent(Object resultObject, Method method) {
+        String classNameResultObject = resultObject.getClass().getSimpleName();
+        String interfaceNameReturnMethod = ((Class) method.getGenericReturnType()).getSimpleName();
+        String annotationName = method.getDeclaredAnnotation(AppComponent.class).name();
+
+        appComponentsByNameClass.put(classNameResultObject, resultObject);
+        classNameByInterfaceName.put(interfaceNameReturnMethod, classNameResultObject);
+        classNameByAnnotationName.put(annotationName, classNameResultObject);
+    }
+
+    private Comparator<Method> getMethodComparator() {
         return new Comparator<Method>() {
             @Override
             public int compare(Method m1, Method m2) {
@@ -108,12 +99,23 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
-        return null;
+        C result = null;
+        String componentClassName = componentClass.getSimpleName();
+        result = (C) appComponentsByNameClass.get(componentClassName);
+        if (result == null) {
+            result = (C) appComponentsByNameClass.get(classNameByInterfaceName.get(componentClassName));
+        }
+        return result;
     }
 
     @Override
     public <C> C getAppComponent(String componentName) {
-        return null;
+        C result = null;
+        result = (C) appComponentsByNameClass.get(componentName);
+        if (result == null) {
+            result = (C) appComponentsByNameClass.get(classNameByAnnotationName.get(componentName));
+        }
+        return result;
     }
 
     private boolean checkArrayWithNull(Object[] objects) {
