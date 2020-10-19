@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface DBServiceUser {
 
-    long saveUser(User user);
+    long save(User user);
 
-    Optional<User> getUser(long id);
+    Optional<User> getById(long id);
 
     Optional<User> getUserByLogin(String login);
 

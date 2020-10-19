@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Пользователи</title>
+    <script>
+        function getUserById() {
+            const userIdTextBox = document.getElementById('userIdTextBox');
+            const userDataContainer = document.getElementById('userDataContainer');
+            const id = userIdTextBox.value;
+            //fetch('api/user?id=' + id)
+            fetch('api/user/' + id)
+                .then(response => response.json())
+                .then(user => userDataContainer.innerHTML = JSON.stringify(user));
+        }
+    </script>
+</head>
+
+</br>
+<h4>Получить пользователя по id:</h4>
+<input type="text" id = "userIdTextBox" value="3" placeholder="Введите id пользователя">
+<button onclick="getUserById()">Получить</button>
+<pre id = "userDataContainer"></pre>
+
+<a th:href="@{/user/create}">Создать пользователя</a>
+</br>
+<h4>Список пользователей:</h4>
+<table style="width: 400px">
+    <thead>
+    <tr>
+        <td style="width: 50px">Id</td>
+        <td style="width: 150px">Имя</td>
+        <td style="width: 100px">Логин</td>
+        <td style="width: 100px">Пароль</td>
+    </tr>
+    </thead>
+    <tbody>
+        <#list userList as user>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">1</td>
+            <td th:text="${user.name}">John</td>
+            <td th:text="${user.login}">login</td>
+            <td th:text="${user.password}">password</td>
+        </tr>
+        </#list>
+    </tbody>
+</table>
+
+</body>
+</html>

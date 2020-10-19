@@ -51,6 +51,6 @@ tasks.withType(JavaCompile) {
 }
 
 war {
-    archiveName 'app.war'
+    archiveName 'warMvc.war'
     from 'src/main/resources'
 }

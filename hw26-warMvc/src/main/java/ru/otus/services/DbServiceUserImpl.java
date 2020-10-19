@@ -22,7 +22,7 @@ public class DbServiceUserImpl implements DBServiceUser {
     }
 
     @Override
-    public long saveUser(User user) {
+    public long save(User user) {
         try (SessionManager sessionManager = userDao.getSessionManager()) {
             sessionManager.beginSession();
             try {
@@ -42,7 +42,7 @@ public class DbServiceUserImpl implements DBServiceUser {
 
 
     @Override
-    public Optional<User> getUser(long id) {
+    public Optional<User> getById(long id) {
         try (SessionManager sessionManager = userDao.getSessionManager()) {
             sessionManager.beginSession();
             try {

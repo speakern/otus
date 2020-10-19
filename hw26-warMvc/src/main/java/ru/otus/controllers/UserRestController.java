@@ -13,10 +13,10 @@ public class UserRestController {
         this.usersService = usersService;
     }
 
-//    @GetMapping("/api/user/{id}")
-//    public User getUserById(@PathVariable(name = "id") long id) {
-//        return usersService.findById(id);
-//    }
+    @GetMapping("/api/user/{id}")
+    public User getUserById(@PathVariable(name = "id") long id) {
+        return usersService.getById(id).get();
+    }
 //
 //    @GetMapping("/api/user")
 //    public User getUserByName(@RequestParam(name = "name") String name) {
