@@ -44,18 +44,18 @@ public class UserController {
         if ((userForm.getName().length() > 3) && (userForm.getLogin().length() > 3) && (userForm.getPassword().length() > 3)) {
             User user = new User(0, userForm.getName(), userForm.getLogin(), userForm.getPassword());
 
-            if (address.length() > 3){
-                user.setAddressDataSet(new AddressDataSet(address, user));
+            if (userForm.getAddress().length() > 3){
+                user.setAddressDataSet(new AddressDataSet(userForm.getAddress(), user));
             }
 
             var listPhone = new ArrayList<PhoneDataSet>();
-            if (phone1.length() > 3) listPhone.add(new PhoneDataSet(phone1, user));
-            if (phone2.length() > 3) listPhone.add(new PhoneDataSet(phone2, user));
+            if (userForm.getPhone1().length() > 3) listPhone.add(new PhoneDataSet(userForm.getPhone1(), user));
+            if (userForm.getPhone2().length() > 3) listPhone.add(new PhoneDataSet(userForm.getPhone2(), user));
             if (listPhone.size() > 0) user.setPhoneDataSets(listPhone);
 
             usersService.save(user);
         }
-        return new RedirectView("/", true);
+        return new RedirectView("/",true);
     }
 
 }
