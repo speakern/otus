@@ -10,7 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.otus.domain.User;
-import ru.otus.services.UsersService;
+import ru.otus.services.DBServiceUser;
+
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,7 +24,7 @@ class UserRestControllerStandaloneTest {
     private MockMvc mvc;
 
     @Mock
-    private UsersService usersService;
+    private DBServiceUser usersService;
 
     @BeforeEach
     public void setUp() {
@@ -32,9 +33,9 @@ class UserRestControllerStandaloneTest {
 
     @Test
     void getUserById() throws Exception {
-        User expectedUser = new User(1, "Vasya");
+        User expectedUser = new User(1, "Vasya", "vasia", "password");
         Gson gson = new GsonBuilder().create();
-        given(usersService.findById(1L)).willReturn(expectedUser);
+        given(usersService.getById(1L).get()).willReturn(expectedUser);
         mvc.perform(get("/api/user/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(expectedUser)));

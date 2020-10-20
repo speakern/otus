@@ -19,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.otus.WebAppInitializer;
 import ru.otus.WebConfig;
 import ru.otus.domain.User;
-import ru.otus.services.UsersService;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,7 +43,7 @@ class UserRestControllerWithContextTest {
     @Test
     void getUserById() throws Exception {
         Gson gson = new GsonBuilder().create();
-        User expectedUser = new User(1, "Крис Гир");
+        User expectedUser = new User(1, "Vasya", "vasia", "password");
         mvc.perform(get("/api/user/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(expectedUser)));

@@ -1,4 +1,3 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Пользователи</title>
@@ -34,14 +33,12 @@
     </tr>
     </thead>
     <tbody>
-        <#list userList as user>
         <tr th:each="user : ${users}">
             <td th:text="${user.id}">1</td>
             <td th:text="${user.name}">John</td>
             <td th:text="${user.login}">login</td>
             <td th:text="${user.password}">password</td>
         </tr>
-        </#list>
     </tbody>
 </table>
 
