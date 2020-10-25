@@ -13,11 +13,19 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MyGsonTest {
-    Gson gson = new Gson();
-    MyGson myGson = new MyGson();
+    private Gson gson;
+    private MyGson2 myGson;
 
     @BeforeEach
     public void setUp() {
+         gson = new Gson();
+         myGson = new MyGson2();
+    }
+
+    @Test
+    void customTest(){
+        //assertThat(myGson.toJson("aaa")).isEqualTo(gson.toJson("aaa"));
+        assertThat(myGson.toJson('b')).isEqualTo(gson.toJson('b'));
     }
 
     @Test
