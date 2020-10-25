@@ -10,7 +10,6 @@ dependencies {
     implementation("com.h2database:h2")
     implementation("org.hibernate:hibernate-core")
 
-
     implementation("ch.qos.logback:logback-classic")
     implementation("com.google.code.gson:gson:${Versions.gson}")
 

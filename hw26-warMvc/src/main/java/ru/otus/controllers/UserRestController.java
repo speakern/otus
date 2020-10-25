@@ -1,8 +1,13 @@
 package ru.otus.controllers;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import ru.otus.domain.PhoneDataSet;
 import ru.otus.domain.User;
 import ru.otus.services.DBServiceUser;
+
+import java.util.List;
 
 @RestController
 public class UserRestController {
@@ -15,22 +20,15 @@ public class UserRestController {
 
     @GetMapping("/api/user/{id}")
     public User getUserById(@PathVariable(name = "id") long id) {
-        return usersService.getById(id).get();
+        User user = usersService.getById(id).orElse(null);
+        if (user != null) doNullUserReference(user);
+        return user;
     }
-//
-//    @GetMapping("/api/user")
-//    public User getUserByName(@RequestParam(name = "name") String name) {
-//        return usersService.findByName(name);
-//    }
-//
-//    @PostMapping("/api/user")
-//    public User saveUser(@RequestBody User user) {
-//        return usersService.save(user);
-//    }
-//
-//    @RequestMapping(method = RequestMethod.GET, value = "/api/user/random")
-//    public User findRandom() {
-//        return usersService.findRandom();
-//    }
+
+    private void doNullUserReference(User user) {
+        List<PhoneDataSet> phoneList = user.getPhoneDataSets();
+        phoneList.forEach(p -> p.setUser(null));
+        if (user.getAddressDataSet() != null) user.getAddressDataSet().setUser(null);
+    }
 
 }

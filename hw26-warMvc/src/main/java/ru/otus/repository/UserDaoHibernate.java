@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.domain.AddressDataSet;
 import ru.otus.domain.PhoneDataSet;
 import ru.otus.domain.User;
-import ru.otus.domain.UserDaoException;
+import ru.otus.exeptions.UserDaoWebMvcException;
 import ru.otus.sessionmanager.DatabaseSessionHibernate;
 import ru.otus.sessionmanager.SessionManager;
 import ru.otus.sessionmanager.SessionManagerHibernate;
@@ -62,7 +62,7 @@ public class UserDaoHibernate implements UserDao {
             return user.getId();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new UserDaoException(e);
+            throw new UserDaoWebMvcException(e);
         }
     }
 
@@ -74,7 +74,7 @@ public class UserDaoHibernate implements UserDao {
             hibernateSession.merge(user);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new UserDaoException(e);
+            throw new UserDaoWebMvcException(e);
         }
     }
 
@@ -91,7 +91,7 @@ public class UserDaoHibernate implements UserDao {
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new UserDaoException(e);
+            throw new UserDaoWebMvcException(e);
         }
     }
 
@@ -105,4 +105,5 @@ public class UserDaoHibernate implements UserDao {
     public SessionManager getSessionManager() {
         return sessionManager;
     }
+
 }

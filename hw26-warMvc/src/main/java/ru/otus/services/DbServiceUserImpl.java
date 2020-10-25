@@ -3,6 +3,9 @@ package ru.otus.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ru.otus.domain.AddressDataSet;
+import ru.otus.domain.PhoneDataSet;
+import ru.otus.exeptions.DbServiceWebMvcException;
 import ru.otus.repository.UserDao;
 import ru.otus.domain.User;
 import ru.otus.sessionmanager.SessionManager;
@@ -19,6 +22,10 @@ public class DbServiceUserImpl implements DBServiceUser {
 
     public DbServiceUserImpl(UserDao userDao) {
         this.userDao = userDao;
+
+        save(createDemoUser("Вася", "vasia"));
+        save(createDemoUser("Иван", "ivan"));
+        save(new User(0, "Vasya", "vasia", "password"));
     }
 
     @Override
@@ -35,7 +42,7 @@ public class DbServiceUserImpl implements DBServiceUser {
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 sessionManager.rollbackSession();
-                throw new DbServiceException(e);
+                throw new DbServiceWebMvcException(e);
             }
         }
     }
@@ -89,4 +96,15 @@ public class DbServiceUserImpl implements DBServiceUser {
         }
     }
 
+    private static User createDemoUser(String name, String login) {
+        User user = new User(0, name, login, login);
+
+        var listPhone = new ArrayList<PhoneDataSet>();
+        for (int idx = 0; idx < 5; idx++) {
+            listPhone.add(new PhoneDataSet("+" + idx, user));
+        }
+        user.setPhoneDataSets(listPhone);
+        user.setAddressDataSet(new AddressDataSet("Mira", user));
+        return user;
+    }
 }

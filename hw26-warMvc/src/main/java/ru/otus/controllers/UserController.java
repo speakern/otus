@@ -33,18 +33,17 @@ public class UserController {
 
     @GetMapping("/user/create")
     public String userCreateView(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("userForm", new UserForm());
         return "create_user.html";
     }
 
     @PostMapping("/user/create")
     public RedirectView userSave(@ModelAttribute UserForm userForm) {
 
-
         if ((userForm.getName().length() > 3) && (userForm.getLogin().length() > 3) && (userForm.getPassword().length() > 3)) {
             User user = new User(0, userForm.getName(), userForm.getLogin(), userForm.getPassword());
 
-            if (userForm.getAddress().length() > 3){
+            if (userForm.getAddress().length() > 3) {
                 user.setAddressDataSet(new AddressDataSet(userForm.getAddress(), user));
             }
 
@@ -55,7 +54,7 @@ public class UserController {
 
             usersService.save(user);
         }
-        return new RedirectView("/",true);
+        return new RedirectView("/", true);
     }
 
 }

@@ -13,6 +13,8 @@ import ru.otus.domain.User;
 import ru.otus.services.DBServiceUser;
 
 
+import java.util.Optional;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,7 +37,8 @@ class UserRestControllerStandaloneTest {
     void getUserById() throws Exception {
         User expectedUser = new User(1, "Vasya", "vasia", "password");
         Gson gson = new GsonBuilder().create();
-        given(usersService.getById(1L).get()).willReturn(expectedUser);
+
+        given(usersService.getById(1L)).willReturn(Optional.of(expectedUser));
         mvc.perform(get("/api/user/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(expectedUser)));

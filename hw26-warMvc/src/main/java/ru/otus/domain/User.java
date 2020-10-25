@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "tUsers")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
