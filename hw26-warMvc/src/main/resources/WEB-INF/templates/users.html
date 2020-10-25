@@ -1,29 +1,82 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8"/>
     <title>Пользователи</title>
     <script>
-        function getUserById() {
-            const userIdTextBox = document.getElementById('userIdTextBox');
+        function getUser(url, valueControlName) {
+            const valueControl = document.getElementById(valueControlName);
             const userDataContainer = document.getElementById('userDataContainer');
-            const id = userIdTextBox.value;
-            //fetch('api/user?id=' + id)
-            fetch('api/user/' + id)
+            const fullUrl = url + (valueControl? (encodeURIComponent(valueControl.value)) : '');
+            fetch(fullUrl)
                 .then(response => response.json())
                 .then(user => userDataContainer.innerHTML = JSON.stringify(user));
         }
     </script>
+
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .users, .users td {
+            border: 1px solid lightgray;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: block;
+        }
+
+        input {
+            width: 150px;
+        }
+
+
+        select {
+            width: 154px;
+        }
+
+        button {
+            width: 250px;
+        }
+
+        .controls-container {
+            margin-bottom: 5px;
+        }
+
+        .single-button-container {
+            margin-left: 158px;
+        }
+
+        h3 {
+            background: url("../static/listmark.png") no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+
+    <style th:inline="text">
+        h3 {
+            background: url([[@{/static/listmark.png}]]) no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
 </head>
 
 </br>
 <h4>Получить пользователя по id:</h4>
-<input type="text" id = "userIdTextBox" value="3" placeholder="Введите id пользователя">
-<button onclick="getUserById()">Получить</button>
+<div class="controls-container">
+    <input type="text" id = "userIdTextBox" value="3" placeholder="Введите id пользователя" >
+    <button onclick="getUser('api/user/', 'userIdTextBox')">Получить пользователя по id</button>
+</div>
 <pre id = "userDataContainer"></pre>
 
 <a th:href="@{/user/create}">Создать пользователя</a>
 </br>
 <h4>Список пользователей:</h4>
-<table style="width: 400px">
+<table class="users">
     <thead>
     <tr>
         <td style="width: 50px">Id</td>
