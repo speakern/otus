@@ -3,12 +3,12 @@ package ru.otus.io;
 import javax.json.JsonObjectBuilder;
 import java.lang.reflect.Field;
 
-public class AddPrimitiveToObject implements AddToPrimitive {
+public class AdditionPrimitiveToObjectTo implements AdditionPrimitiveTo {
     private final JsonObjectBuilder jsonObj;
     private final Field field;
     private final Object object;
 
-    public AddPrimitiveToObject(JsonObjectBuilder jsonObj, Field field, Object object){
+    public AdditionPrimitiveToObjectTo(JsonObjectBuilder jsonObj, Field field, Object object) {
         this.jsonObj = jsonObj;
         this.field = field;
         field.setAccessible(true);
@@ -26,28 +26,28 @@ public class AddPrimitiveToObject implements AddToPrimitive {
     }
 
     @Override
-    public void addInteger(){
+    public void addInteger() {
         jsonObj.add(field.getName(), (int) object);
     }
 
     @Override
-    public void addLong(){
+    public void addLong() {
         jsonObj.add(field.getName(), (long) object);
     }
 
     @Override
-    public void addBoolean(){
+    public void addBoolean() {
         jsonObj.add(field.getName(), (boolean) object);
     }
 
     @Override
-    public void addChar(){
+    public void addChar() {
         Character ch = (Character) object;
         jsonObj.add(field.getName(), ch.toString());
     }
 
     @Override
-    public void addDouble(){
+    public void addDouble() {
         jsonObj.add(field.getName(), (double) object);
     }
 
@@ -57,7 +57,7 @@ public class AddPrimitiveToObject implements AddToPrimitive {
     }
 
     @Override
-    public void addString(){
+    public void addString() {
         jsonObj.add(field.getName(), (String) object);
     }
 

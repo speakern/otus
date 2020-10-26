@@ -14,18 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MyGsonTest {
     private Gson gson;
-    private MyGson2 myGson;
+    private MyGson myGson;
 
     @BeforeEach
     public void setUp() {
          gson = new Gson();
-         myGson = new MyGson2();
+         myGson = new MyGson();
     }
 
     @Test
-    void customTest(){
-        String myGsonStr = myGson.toJson("aaa");
-        String gsonStr = gson.toJson("aaa");
+    @DisplayName("Тестируем непонятное поведение gson возвращать кавычки")
+    void customTest(){ ;
         assertThat(myGson.toJson("aaa")).isEqualTo(gson.toJson("aaa"));
         assertThat(myGson.toJson('b')).isEqualTo(gson.toJson('b'));
     }
@@ -35,6 +34,7 @@ class MyGsonTest {
     void checkSimpleObject() {
         BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434, 'w');
         String myJson = myGson.toJson(originalObj);
+
         //String myJson = gson.toJson(originalObj);
         System.out.println(myJson);
 
