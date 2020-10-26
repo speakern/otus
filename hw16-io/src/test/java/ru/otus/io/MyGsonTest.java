@@ -24,7 +24,9 @@ class MyGsonTest {
 
     @Test
     void customTest(){
-        //assertThat(myGson.toJson("aaa")).isEqualTo(gson.toJson("aaa"));
+        String myGsonStr = myGson.toJson("aaa");
+        String gsonStr = gson.toJson("aaa");
+        assertThat(myGson.toJson("aaa")).isEqualTo(gson.toJson("aaa"));
         assertThat(myGson.toJson('b')).isEqualTo(gson.toJson('b'));
     }
 
