@@ -41,9 +41,11 @@ public class MyCache<K, V> implements HwCache<K, V> {
     public void removeListener(HwListener<K, V> listener) {
         int removeIndex = 0;
         for (int i = 0; i < listeners.size(); i++) {
-            if (listeners.get(i).get().equals(listener)) {
-                removeIndex = i;
-                break;
+            if (listeners.get(i)!= null) {
+                if (listeners.get(i).get().equals(listener)) {
+                    removeIndex = i;
+                    break;
+                }
             }
         }
         listeners.remove(removeIndex);
@@ -52,7 +54,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
     private void notify(K key, V value, String actionName) {
         try {
             listeners.forEach(listener -> {
-                if (listener.get() != null) listener.get().notify(key, value, actionName);
+                if (listener != null && listener.get() != null) listener.get().notify(key, value, actionName);
             });
         } catch (Exception ex) {
             ex.printStackTrace();
