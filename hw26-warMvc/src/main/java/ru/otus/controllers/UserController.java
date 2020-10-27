@@ -6,13 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
-import ru.otus.domain.AddressDataSet;
-import ru.otus.domain.PhoneDataSet;
 import ru.otus.domain.User;
 import ru.otus.dto.UserForm;
 import ru.otus.services.DBServiceUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -41,16 +38,7 @@ public class UserController {
     public RedirectView userSave(@ModelAttribute UserForm userForm) {
 
         if ((userForm.getName().length() > 3) && (userForm.getLogin().length() > 3) && (userForm.getPassword().length() > 3)) {
-            User user = new User(0, userForm.getName(), userForm.getLogin(), userForm.getPassword());
-
-            if (userForm.getAddress().length() > 3) {
-                user.setAddressDataSet(new AddressDataSet(userForm.getAddress(), user));
-            }
-
-            var listPhone = new ArrayList<PhoneDataSet>();
-            if (userForm.getPhone1().length() > 3) listPhone.add(new PhoneDataSet(userForm.getPhone1(), user));
-            if (userForm.getPhone2().length() > 3) listPhone.add(new PhoneDataSet(userForm.getPhone2(), user));
-            if (listPhone.size() > 0) user.setPhoneDataSets(listPhone);
+            User user = userForm.getUser();
 
             usersService.save(user);
         }

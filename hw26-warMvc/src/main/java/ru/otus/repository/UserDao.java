@@ -18,6 +18,4 @@ public interface UserDao {
     void insertOrUpdate(User user);
 
     List<User> findAll();
-
-    SessionManager getSessionManager();
 }

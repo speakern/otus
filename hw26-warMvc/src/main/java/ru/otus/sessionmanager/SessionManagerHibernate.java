@@ -3,6 +3,7 @@ package ru.otus.sessionmanager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import ru.otus.exeptions.SessionManagerWebMvcException;
 
 public class SessionManagerHibernate implements SessionManager {
 
@@ -11,7 +12,7 @@ public class SessionManagerHibernate implements SessionManager {
 
     public SessionManagerHibernate(SessionFactory sessionFactory) {
         if (sessionFactory == null) {
-            throw new SessionManagerException("SessionFactory is null");
+            throw new SessionManagerWebMvcException("SessionFactory is null");
         }
         this.sessionFactory = sessionFactory;
     }
@@ -21,7 +22,7 @@ public class SessionManagerHibernate implements SessionManager {
         try {
             databaseSession = new DatabaseSessionHibernate(sessionFactory.openSession());
         } catch (Exception e) {
-            throw new SessionManagerException(e);
+            throw new SessionManagerWebMvcException(e);
         }
     }
 
@@ -32,7 +33,7 @@ public class SessionManagerHibernate implements SessionManager {
             databaseSession.getTransaction().commit();
             databaseSession.getHibernateSession().close();
         } catch (Exception e) {
-            throw new SessionManagerException(e);
+            throw new SessionManagerWebMvcException(e);
         }
     }
 
@@ -43,7 +44,7 @@ public class SessionManagerHibernate implements SessionManager {
             databaseSession.getTransaction().rollback();
             databaseSession.getHibernateSession().close();
         } catch (Exception e) {
-            throw new SessionManagerException(e);
+            throw new SessionManagerWebMvcException(e);
         }
     }
 
@@ -66,7 +67,7 @@ public class SessionManagerHibernate implements SessionManager {
             databaseSession.close();
             databaseSession = null;
         } catch (Exception e) {
-            throw new SessionManagerException(e);
+            throw new SessionManagerWebMvcException(e);
         }
     }
 
@@ -78,16 +79,16 @@ public class SessionManagerHibernate implements SessionManager {
 
     private void checkSessionAndTransaction() {
         if (databaseSession == null) {
-            throw new SessionManagerException("DatabaseSession not opened ");
+            throw new SessionManagerWebMvcException("DatabaseSession not opened ");
         }
         Session session = databaseSession.getHibernateSession();
         if (session == null || !session.isConnected()) {
-            throw new SessionManagerException("Session not opened ");
+            throw new SessionManagerWebMvcException("Session not opened ");
         }
 
         Transaction transaction = databaseSession.getTransaction();
         if (transaction == null || !transaction.isActive()) {
-            throw new SessionManagerException("Transaction not opened ");
+            throw new SessionManagerWebMvcException("Transaction not opened ");
         }
     }
 }

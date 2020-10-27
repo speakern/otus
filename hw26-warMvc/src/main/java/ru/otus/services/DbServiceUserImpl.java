@@ -19,81 +19,75 @@ public class DbServiceUserImpl implements DBServiceUser {
     private static Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
 
     private final UserDao userDao;
+    private final SessionManager sessionManager;
 
-    public DbServiceUserImpl(UserDao userDao) {
+    public DbServiceUserImpl(UserDao userDao, SessionManager sessionManager) {
         this.userDao = userDao;
+        this.sessionManager = sessionManager;
 
-        save(createDemoUser("Вася", "vasia"));
+        save(createDemoUser("Вася4", "vasia"));
         save(createDemoUser("Иван", "ivan"));
         save(new User(0, "Vasya", "vasia", "password"));
     }
 
     @Override
     public long save(User user) {
-        try (SessionManager sessionManager = userDao.getSessionManager()) {
-            sessionManager.beginSession();
-            try {
-                userDao.insertOrUpdate(user);
-                long userId = user.getId();
-                sessionManager.commitSession();
+        sessionManager.beginSession();
+        try {
+            userDao.insertOrUpdate(user);
+            long userId = user.getId();
+            sessionManager.commitSession();
 
-                logger.info("created user: {}", userId);
-                return userId;
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                sessionManager.rollbackSession();
-                throw new DbServiceWebMvcException(e);
-            }
+            logger.info("created user: {}", userId);
+            return userId;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            sessionManager.rollbackSession();
+            throw new DbServiceWebMvcException(e);
         }
     }
 
 
     @Override
     public Optional<User> getById(long id) {
-        try (SessionManager sessionManager = userDao.getSessionManager()) {
-            sessionManager.beginSession();
-            try {
-                Optional<User> userOptional = userDao.findById(id);
-                logger.info("user: {}", userOptional.orElse(null));
-                return userOptional;
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                sessionManager.rollbackSession();
-            }
-            return Optional.empty();
+        sessionManager.beginSession();
+        try {
+            Optional<User> userOptional = userDao.findById(id);
+            logger.info("user: {}", userOptional.orElse(null));
+            return userOptional;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            sessionManager.rollbackSession();
         }
+        return Optional.empty();
     }
 
     @Override
     public List<User> getAllUser() {
-        try (SessionManager sessionManager = userDao.getSessionManager()) {
-            sessionManager.beginSession();
-            try {
-                List<User> userList = userDao.findAll();
-                logger.info("user: {}", userList);
-                return userList;
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                sessionManager.rollbackSession();
-            }
-            return new ArrayList<>();
+        sessionManager.beginSession();
+        try {
+            List<User> userList = userDao.findAll();
+            logger.info("user: {}", userList);
+            return userList;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            sessionManager.rollbackSession();
         }
+        return new ArrayList<>();
     }
 
     @Override
     public Optional<User> getUserByLogin(String login) {
-        try (SessionManager sessionManager = userDao.getSessionManager()) {
-            sessionManager.beginSession();
-            try {
-                Optional<User> userOptional = userDao.findByLogin(login);
-                logger.info("user: {}", userOptional.orElse(null));
-                return userOptional;
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                sessionManager.rollbackSession();
-            }
-            return Optional.empty();
+        sessionManager.beginSession();
+        try {
+            Optional<User> userOptional = userDao.findByLogin(login);
+            logger.info("user: {}", userOptional.orElse(null));
+            return userOptional;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            sessionManager.rollbackSession();
         }
+        return Optional.empty();
     }
 
     private static User createDemoUser(String name, String login) {

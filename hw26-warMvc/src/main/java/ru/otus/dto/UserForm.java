@@ -1,5 +1,11 @@
 package ru.otus.dto;
 
+import ru.otus.domain.AddressDataSet;
+import ru.otus.domain.PhoneDataSet;
+import ru.otus.domain.User;
+
+import java.util.ArrayList;
+
 public class UserForm {
     private String name;
     private String login;
@@ -57,5 +63,20 @@ public class UserForm {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public User getUser() {
+        User user = new User(0, getName(), getLogin(), getPassword());
+
+        if (getAddress().length() > 3) {
+            user.setAddressDataSet(new AddressDataSet(getAddress(), user));
+        }
+
+        var listPhone = new ArrayList<PhoneDataSet>();
+        if (getPhone1().length() > 3) listPhone.add(new PhoneDataSet(getPhone1(), user));
+        if (getPhone2().length() > 3) listPhone.add(new PhoneDataSet(getPhone2(), user));
+        if (listPhone.size() > 0) user.setPhoneDataSets(listPhone);
+
+        return user;
     }
 }
