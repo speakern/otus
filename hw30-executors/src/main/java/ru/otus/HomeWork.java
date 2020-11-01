@@ -1,41 +1,38 @@
 package ru.otus;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.otus.monitor.PingPong;
 
 public class HomeWork {
-    private static final Logger logger = LoggerFactory.getLogger(PingPong.class);
+    private static final Logger logger = LoggerFactory.getLogger(HomeWork.class);
     private static final String ADDITION = "addition";
     private static final String SUBTRACTION = "subtraction";
     private static final int MAX_NUMBER = 10;
-    private static final int MIN_NUMBER = 0;
+    private static final int MIN_NUMBER = 1;
+    private static final int SLEEP_TIME = 100;
 
-    private String last = "PONG";
+    private String last = "SECOND";
 
     private synchronized void action(String message) {
-        int number = 0;
+        int number = MIN_NUMBER - 1;
         String action = ADDITION;
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             try {
-                //spurious wakeup https://en.wikipedia.org/wiki/Spurious_wakeup
-                //поэтому не if
                 while (last.equals(message)) {
                     this.wait();
                 }
 
-                //logger.info(message);
                 last = message;
-                sleep();
+                sleep(SLEEP_TIME);
                 notifyAll();
+
                 if (action.equals(ADDITION)) number++;
                 if (action.equals(SUBTRACTION)) number--;
 
-                if (number == MAX_NUMBER) action = ADDITION;
-                if (number == MIN_NUMBER) action = SUBTRACTION;
+                if (number == MAX_NUMBER) action = SUBTRACTION;
+                if (number == MIN_NUMBER) action = ADDITION;
 
-                logger.info("{}",number);
+                logger.info("{}", number);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 throw new HomeWork.NotInterestingException(ex);
@@ -45,13 +42,14 @@ public class HomeWork {
 
     public static void main(String[] args) {
         HomeWork homeWork = new HomeWork();
-        new Thread(() -> homeWork.action("ping")).start();
-        new Thread(() -> homeWork.action("PONG")).start();
+        new Thread(() -> homeWork.action("FIRST")).start();
+        sleep(1);
+        new Thread(() -> homeWork.action("SECOND")).start();
     }
 
-    private static void sleep() {
+    private static void sleep(int millis) {
         try {
-            Thread.sleep(1_000);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
             Thread.currentThread().interrupt();
