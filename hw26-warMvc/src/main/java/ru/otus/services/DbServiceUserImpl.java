@@ -24,10 +24,6 @@ public class DbServiceUserImpl implements DBServiceUser {
     public DbServiceUserImpl(UserDao userDao, SessionManager sessionManager) {
         this.userDao = userDao;
         this.sessionManager = sessionManager;
-
-        save(createDemoUser("Вася5", "vasia"));
-        save(createDemoUser("Иван", "ivan"));
-        save(new User(0, "Vasya", "vasia", "password"));
     }
 
     @Override
@@ -46,7 +42,6 @@ public class DbServiceUserImpl implements DBServiceUser {
             throw new DbServiceWebMvcException(e);
         }
     }
-
 
     @Override
     public Optional<User> getById(long id) {

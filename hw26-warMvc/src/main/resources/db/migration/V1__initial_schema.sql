@@ -5,12 +5,12 @@ create table users (id bigint not null, login varchar(255), name varchar(255), p
 alter table address add constraint FKncldppt0ukeeq7x2p4olbvhei foreign key (person_id) references users;
 alter table phone add constraint FKoi5lexwwtw7lmkmiqn8yc3i9r foreign key (user_id) references users;
 
-insert into users (login, name, password, id) values ('Вася5', 'vasia', 'vasia', 1);
-insert into phone (phone_number, user_id, id) values (133, 1, 1);
-insert into phone (phone_number, user_id, id) values (123, 1, 2);
-insert into address (street, person_id, id) values  ('222', 1, 1);
-insert into users (login, name, password, id) values ('Иван', 'ivan', 'ivan', 2);
-insert into phone (phone_number, user_id, id) values (222, 2, 1);
-insert into phone (phone_number, user_id, id) values (222, 2, 2);
-insert into address (street, person_id, id) values ('333', 2, 1);
-insert into users (login, name, password, id) values ('Иван', 'ivan', 'ivan', 3);
+insert into users (login, name, password, id) values ('vasia', 'Вася5', 'vasia', 1);
+insert into users (login, name, password, id) values ('ivan', 'Иван', 'ivan', 2);
+insert into users (login, name, password, id) values ('ivan', 'Иван', 'ivan', 3);
+insert into phone (phone_number, user_id, id) values (79992223333, 1, 4);
+insert into phone (phone_number, user_id, id) values (79992223333, 1, 5);
+insert into address (street, person_id, id) values  ('Mira', 1, 6);
+insert into phone (phone_number, user_id, id) values (79992223333, 2, 7);
+insert into phone (phone_number, user_id, id) values (79992223333, 2, 8);
+insert into address (street, person_id, id) values ('Lenina', 2, 9);

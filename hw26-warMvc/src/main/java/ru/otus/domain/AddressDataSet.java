@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tAddress")
+@Table(name = "address")
 public class AddressDataSet {
     @Id
     @GeneratedValue

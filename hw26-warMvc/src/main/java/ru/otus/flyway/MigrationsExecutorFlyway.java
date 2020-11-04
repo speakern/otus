@@ -21,6 +21,7 @@ public class MigrationsExecutorFlyway implements MigrationsExecutor {
                 .dataSource(dbUrl, dbUserName, dbPassword)
                 .locations("classpath:/db/migration")
                 .load();
+        executeMigrations();
     }
 
     @Override

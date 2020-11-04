@@ -37,9 +37,8 @@ class UserRestControllerWithContextTest {
     @Test
     void getUserById() throws Exception {
         Gson gson = new GsonBuilder().create();
-        User expectedUser = new User(15, "Vasya", "vasia", "password");
-
-        mvc.perform(get("/api/user/{id}", 15L))
+        User expectedUser = new User(3, "Иван", "ivan", "ivan");
+        mvc.perform(get("/api/user/{id}", 3L))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(expectedUser)));
     }
