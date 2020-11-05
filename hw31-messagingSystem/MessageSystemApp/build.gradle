@@ -13,6 +13,28 @@ dependencies {
     implementation("org.webjars:sockjs-client:${Versions.sockjs}")
     implementation("org.webjars:stomp-websocket:${Versions.stomp}")
     implementation("org.webjars:bootstrap:${Versions.bootstrap}")
+
+    implementation("com.h2database:h2")
+    implementation("org.hibernate:hibernate-core")
+
+    implementation("ch.qos.logback:logback-classic")
+    implementation("com.google.code.gson:gson:${Versions.gson}")
+
+    implementation("org.javassist:javassist:3.24.0-GA")
+
+    implementation("org.springframework:spring-context")
+    implementation("org.springframework:spring-webmvc")
+    implementation("org.springframework:spring-web")
+    implementation("org.thymeleaf:thymeleaf")
+    implementation("org.thymeleaf:thymeleaf-spring5")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
+
+    testCompile ("org.springframework:spring-test")
+    testCompile ("org.hamcrest:hamcrest-core")
 }
 
 compileJava.options.encoding = 'UTF-8'
