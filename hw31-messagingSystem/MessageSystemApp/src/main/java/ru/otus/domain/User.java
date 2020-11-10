@@ -1,13 +1,15 @@
 package ru.otus.domain;
 
 
+import ru.otus.messagesystem.client.ResultDataType;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends ResultDataType {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")

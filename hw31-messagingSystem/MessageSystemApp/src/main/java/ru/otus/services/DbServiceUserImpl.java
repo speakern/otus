@@ -85,15 +85,4 @@ public class DbServiceUserImpl implements DBServiceUser {
         return Optional.empty();
     }
 
-    private static User createDemoUser(String name, String login) {
-        User user = new User(0, name, login, login);
-
-        var listPhone = new ArrayList<PhoneDataSet>();
-        for (int idx = 0; idx < 5; idx++) {
-            listPhone.add(new PhoneDataSet("+" + idx, user));
-        }
-        user.setPhoneDataSets(listPhone);
-        user.setAddressDataSet(new AddressDataSet("Mira", user));
-        return user;
-    }
 }

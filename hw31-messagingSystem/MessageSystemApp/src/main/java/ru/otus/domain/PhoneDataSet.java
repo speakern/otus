@@ -1,11 +1,13 @@
 package ru.otus.domain;
 
+import ru.otus.messagesystem.client.ResultDataType;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "phone")
-public class PhoneDataSet {
+public class PhoneDataSet extends ResultDataType {
     @Id
     @GeneratedValue
     private Long id;
