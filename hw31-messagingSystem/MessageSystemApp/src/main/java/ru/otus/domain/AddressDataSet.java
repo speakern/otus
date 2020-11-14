@@ -57,7 +57,7 @@ public class AddressDataSet extends ResultDataType{
         return "AddressDataSet{" +
                 "id=" + id +
                 ", street='" + street + '\'' +
-                ", userId=" + user.getId() +
+         //       ", userId=" + user.getId() +
                 '}';
     }
 

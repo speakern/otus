@@ -20,8 +20,9 @@ public class GetUserDataRequestHandler implements RequestHandler<User> {
 
     @Override
     public Optional<Message> handle(Message msg) {
-        UserData userData = MessageHelper.getPayload(msg);
-        User data = dbService.getById(userData.getUserId()).orElse(null);
+        //UserData userData = MessageHelper.getPayload(msg);
+        User user = MessageHelper.getPayload(msg);
+        User data = dbService.getById(user.getId()).orElse(null);
         //UserData data = new UserData(userData.getUserId(), dbService.getById(userData.getUserId()));
         return Optional.of(MessageBuilder.buildReplyMessage(msg, data));
     }

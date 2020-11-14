@@ -59,7 +59,7 @@ public class PhoneDataSet extends ResultDataType {
     public String toString() {
         return "Phone{" +
                 "id=" + id +
-                ", userId=" + user.getId() +
+         //       ", userId=" + user.getId() +
                 ", number='" + number + '\'' +
                 '}';
     }
