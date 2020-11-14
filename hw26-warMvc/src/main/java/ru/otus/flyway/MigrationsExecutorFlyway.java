@@ -8,15 +8,17 @@ import org.slf4j.LoggerFactory;
 public class MigrationsExecutorFlyway implements MigrationsExecutor {
     private static Logger logger = LoggerFactory.getLogger(MigrationsExecutor.class);
 
-    private final Flyway flyway;
+    private Flyway flyway;
+    private final Configuration configuration;
 
     public MigrationsExecutorFlyway(String hibernateConfigResourceFileName) {
-        Configuration configuration = new Configuration().configure(hibernateConfigResourceFileName);
+        configuration = new Configuration().configure(hibernateConfigResourceFileName);
+    }
 
+    public void init() {
         String dbUrl = configuration.getProperty("hibernate.connection.url");
         String dbUserName = configuration.getProperty("hibernate.connection.username");
         String dbPassword = configuration.getProperty("hibernate.connection.password");
-
         flyway = Flyway.configure()
                 .dataSource(dbUrl, dbUserName, dbPassword)
                 .locations("classpath:/db/migration")

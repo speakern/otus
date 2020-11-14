@@ -21,7 +21,7 @@ public class DBConfig {
         return sessionFactory;
     }
 
-    @Bean
+    @Bean(initMethod="init")
     public MigrationsExecutor migrationsExecutor() {
         MigrationsExecutor migrationsExecutor = new MigrationsExecutorFlyway(HIBERNATE_CFG_FILE);
         return migrationsExecutor;
