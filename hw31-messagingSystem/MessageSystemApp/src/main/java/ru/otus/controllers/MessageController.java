@@ -44,7 +44,7 @@ public class MessageController {
             @Override
             public void accept(User data) {
                 if (data != null) doNullUserReference(data);
-                template.convertAndSend("/topic/response.{roomId}", data);
+                template.convertAndSend("/topic/response.1", data);
             }
         });
 
