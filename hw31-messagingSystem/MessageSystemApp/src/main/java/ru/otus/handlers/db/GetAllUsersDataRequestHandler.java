@@ -8,6 +8,7 @@ import ru.otus.messagesystem.message.MessageBuilder;
 import ru.otus.messagesystem.message.MessageHelper;
 import ru.otus.services.DBServiceUser;
 
+import java.util.List;
 import java.util.Optional;
 
 public class GetAllUsersDataRequestHandler implements RequestHandler<AllUsers> {
@@ -20,9 +21,7 @@ public class GetAllUsersDataRequestHandler implements RequestHandler<AllUsers> {
     @Override
     public Optional<Message> handle(Message msg) {
         AllUsers allUsers = MessageHelper.getPayload(msg);
-        User data = dbService.getById(user.getId()).orElse(null);
-        //UserData data = new UserData(userData.getUserId(), dbService.getById(userData.getUserId()));
-        return Optional.of(MessageBuilder.buildReplyMessage(msg, data));
-        return Optional.empty();
+        List<User> data = dbService.getAllUser();
+        return Optional.of(MessageBuilder.buildReplyMessage(msg, new AllUsers(data)));
     }
 }

@@ -52,6 +52,7 @@ public class MessageController {
 
         return new Message(HtmlUtils.htmlEscape(message.getMessageStr()));
     }
+
     @GetMapping("/message")
     public String userListView() {
         return "index.html";
