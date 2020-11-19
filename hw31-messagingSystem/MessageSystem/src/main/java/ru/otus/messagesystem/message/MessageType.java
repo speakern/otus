@@ -2,7 +2,8 @@ package ru.otus.messagesystem.message;
 
 public enum MessageType {
     USER_DATA("UserData"),
-    USER("User");
+    USER("User"),
+    ALLUSERS("AllUsers");
 
     private final String name;
 

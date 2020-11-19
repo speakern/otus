@@ -2,6 +2,9 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Пользователи</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/script.js"></script>
     <link href="/style.css" rel="stylesheet">
 
@@ -19,6 +22,7 @@
 <div class="controls-container">
     <input type="text" id = "userIdTextBox" value="3" placeholder="Введите id пользователя" >
     <button onclick="getUser('api/user/', 'userIdTextBox')">Получить пользователя по id</button>
+    <button onclick="sendMsg()">Получить пользователя по id2</button>
 </div>
 <pre id = "userDataContainer"></pre>
 

@@ -10,11 +10,17 @@ function getUser(url, valueControlName) {
 const connect = () => {
     stompClient = Stomp.over(new SockJS('/gs-guide-websocket'));
     stompClient.connect({}, (frame) => {
-        setConnected(true);
+       // setConnected(true);
         console.log('Connected: ' + frame);
         // stompClient.subscribe('/topic/response.' + $("#roomId").val(), (message) => showMessage(JSON.parse(message.body).messageStr));
         stompClient.subscribe('/topic/response.1', (message) => showMessage(message.body));
     });
 }
 
-const showMessage = (message) => $("#chatLine").append("<tr><td>" + message + "</td></tr>")
+const showMessage = (message) => $("#userDataContainer").html(message)
+
+const sendMsg = () => {
+    stompClient.send("/app/message.1", {}, JSON.stringify({'messageStr': $("#userIdTextBox").val()}))
+}
+
+$(document).ready(connect());
