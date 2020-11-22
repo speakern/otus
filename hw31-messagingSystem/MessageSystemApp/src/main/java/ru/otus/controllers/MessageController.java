@@ -12,6 +12,7 @@ import org.springframework.web.util.HtmlUtils;
 import ru.otus.domain.Message;
 import ru.otus.domain.PhoneDataSet;
 import ru.otus.domain.User;
+import ru.otus.dto.AllUsers;
 import ru.otus.messagesystem.client.MessageCallback;
 import ru.otus.services.FrontendService;
 
@@ -33,9 +34,9 @@ public class MessageController {
         this.template = template;
     }
 
-    @MessageMapping("/message.{roomId}")
+    @MessageMapping("/getUser.{roomId}")
     //@SendTo("/topic/response.{roomId}")
-    public Message getMessage(@DestinationVariable String roomId, Message message) {
+    public Message getUser(@DestinationVariable String roomId, Message message) {
         logger.info("got message:{}, roomId:{}", message, roomId);
 
         long userId = Long.parseLong(message.getMessageStr());
@@ -45,7 +46,27 @@ public class MessageController {
             public void accept(User data) {
                 if (data != null) {
                     doNullUserReference(data);
-                    template.convertAndSend("/topic/response.1", data);
+                    template.convertAndSend("/topic/response/getUser.1", data);
+                }
+            }
+        });
+
+        return new Message(HtmlUtils.htmlEscape(message.getMessageStr()));
+    }
+
+    @MessageMapping("/getAllUsers.{roomId}")
+    //@SendTo("/topic/response.{roomId}")
+    public Message getAllUser(@DestinationVariable String roomId, Message message) {
+        logger.info("got message:{}, roomId:{}", message, roomId);
+
+        long userId = Long.parseLong(message.getMessageStr());
+        frontendService.getAllUser(new MessageCallback<AllUsers> () {
+
+            @Override
+            public void accept(AllUsers data) {
+                if (data != null) {
+                    doNullListUserReference(data.getList());
+                    template.convertAndSend("/topic/response/getAllUsers.1", data);
                 }
             }
         });
@@ -56,6 +77,12 @@ public class MessageController {
     @GetMapping("/message")
     public String userListView() {
         return "index.html";
+    }
+
+    private void doNullListUserReference(List<User> users) {
+        for (User user: users) {
+            doNullUserReference(user);
+        }
     }
 
     private void doNullUserReference(User user) {
