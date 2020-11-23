@@ -9,7 +9,7 @@ import java.util.Objects;
 @Table(name = "phone")
 public class PhoneDataSet extends ResultDataType {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "phone_number", nullable = false)

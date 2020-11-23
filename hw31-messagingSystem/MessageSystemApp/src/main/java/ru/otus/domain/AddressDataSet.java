@@ -9,7 +9,7 @@ import java.util.Objects;
 @Table(name = "address")
 public class AddressDataSet extends ResultDataType{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "street", nullable = false)
