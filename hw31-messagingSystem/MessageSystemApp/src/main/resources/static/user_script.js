@@ -3,12 +3,11 @@ let uuid = Math.random().toString(36).slice(-10);
 const connect = () => {
     stompClient = Stomp.over(new SockJS('/gs-guide-websocket'));
     stompClient.connect({}, (frame) => {
-       // setConnected(true);
+        // setConnected(true);
         console.log('Connected: ' + frame);
-        // stompClient.subscribe('/topic/response.' + $("#roomId").val(), (message) => showMessage(JSON.parse(message.body).messageStr));
-        stompClient.subscribe('/topic/response/getUser.' + uuid, (message) => showMessage(message.body));
-        stompClient.subscribe('/topic/response/getAllUsers', (message) => showListUsers(JSON.parse(message.body)));
-        sendMsgGetAllUsers();
+        stompClient.subscribe('/topic/response/createUser.' + uuid, (message) => showMessage(message.body));
+        //stompClient.subscribe('/topic/response/getAllUsers', (message) => showListUsers(JSON.parse(message.body)));
+        //sendMsgGetAllUsers();
     });
 }
 
@@ -29,11 +28,8 @@ const showListUsers = (message) => {
 
 }
 
-const sendMsgGetUser = () => {
-    stompClient.send("/app/getUser." + uuid, {}, JSON.stringify({'messageStr': $("#userIdTextBox").val()}))
-}
-const sendMsgGetAllUsers = () => {
-    stompClient.send("/app/getAllUsers")
+const sendMsgCreateUser = () => {
+    stompClient.send("/app/createUser." + uuid, {}, ``)
 }
 
 $(document).ready(function () {

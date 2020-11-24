@@ -34,10 +34,9 @@ public class MessageController {
         this.template = template;
     }
 
-    @MessageMapping("/getUser.{roomId}")
-    //@SendTo("/topic/response.{roomId}")
-    public Message getUser(@DestinationVariable String roomId, Message message) {
-        logger.info("got message:{}, roomId:{}", message, roomId);
+    @MessageMapping("/getUser.{uuid}")
+    public Message getUser(@DestinationVariable String uuid, Message message) {
+        logger.info("got message:{}, uuid:{}", message, uuid);
 
         long userId = Long.parseLong(message.getMessageStr());
         frontendService.getById(userId, new MessageCallback<User>() {
@@ -46,7 +45,7 @@ public class MessageController {
             public void accept(User data) {
                 if (data != null) {
                     doNullUserReference(data);
-                    template.convertAndSend("/topic/response/getUser.1", data);
+                    template.convertAndSend("/topic/response/getUser." + uuid, data);
                 }
             }
         });
@@ -54,24 +53,22 @@ public class MessageController {
         return new Message(HtmlUtils.htmlEscape(message.getMessageStr()));
     }
 
-    @MessageMapping("/getAllUsers.{roomId}")
-    //@SendTo("/topic/response.{roomId}")
-    public Message getAllUser(@DestinationVariable String roomId, Message message) {
-        logger.info("got message:{}, roomId:{}", message, roomId);
+    @MessageMapping("/getAllUsers")
+    public Message getAllUser() {
+        logger.info("got message get all users");
 
-        long userId = Long.parseLong(message.getMessageStr());
         frontendService.getAllUser(new MessageCallback<AllUsers> () {
 
             @Override
             public void accept(AllUsers data) {
                 if (data != null) {
                     doNullListUserReference(data.getList());
-                    template.convertAndSend("/topic/response/getAllUsers.1", data);
+                    template.convertAndSend("/topic/response/getAllUsers", data);
                 }
             }
         });
 
-        return new Message(HtmlUtils.htmlEscape(message.getMessageStr()));
+        return new Message();
     }
 
     @GetMapping("/message")

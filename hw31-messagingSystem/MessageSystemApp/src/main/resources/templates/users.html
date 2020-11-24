@@ -21,7 +21,6 @@
 <h4>Получить пользователя по id:</h4>
 <div class="controls-container">
     <input type="text" id = "userIdTextBox" value="3" placeholder="Введите id пользователя" >
-<!--    <button onclick="getUser('api/user/', 'userIdTextBox')">Получить пользователя по id</button>-->
     <button onclick="sendMsgGetUser()">Получить пользователя по id2</button>
 </div>
 <pre id = "userDataContainer"></pre>
@@ -36,7 +35,8 @@
         <td style="width: 50px">Id</td>
         <td style="width: 150px">Имя</td>
         <td style="width: 100px">Логин</td>
-        <td style="width: 100px">Пароль</td>
+        <td style="width: 100px">Адрес</td>
+        <td style="width: 100px">Телефон</td>
     </tr>
     </thead>
     <tbody id="list">
