@@ -13,6 +13,7 @@ import ru.otus.domain.Message;
 import ru.otus.domain.PhoneDataSet;
 import ru.otus.domain.User;
 import ru.otus.dto.AllUsers;
+import ru.otus.dto.UserForm;
 import ru.otus.messagesystem.client.MessageCallback;
 import ru.otus.services.FrontendService;
 
@@ -35,7 +36,7 @@ public class MessageController {
     }
 
     @MessageMapping("/getUser.{uuid}")
-    public Message getUser(@DestinationVariable String uuid, Message message) {
+    public void getUser(@DestinationVariable String uuid, Message message) {
         logger.info("got message:{}, uuid:{}", message, uuid);
 
         long userId = Long.parseLong(message.getMessageStr());
@@ -50,11 +51,30 @@ public class MessageController {
             }
         });
 
-        return new Message(HtmlUtils.htmlEscape(message.getMessageStr()));
+        //return new Message(HtmlUtils.htmlEscape(message.getMessageStr()));
+    }
+
+    @MessageMapping("/createUser.{uuid}")
+    public void createUser(@DestinationVariable String uuid, UserForm userForm) {
+        logger.info("got message:{}, uuid:{}", userForm, uuid);
+
+        //long userId = 1L;//Long.parseLong(message.getMessageStr());
+        frontendService.createUser(userForm.getUser(), new MessageCallback<User>() {
+
+            @Override
+            public void accept(User data) {
+                if (data != null) {
+                    doNullUserReference(data);
+                    template.convertAndSend("/topic/response/createUser." + uuid, "user created");
+                }
+            }
+        });
+
+       // return new Message();
     }
 
     @MessageMapping("/getAllUsers")
-    public Message getAllUser() {
+    public void getAllUser() {
         logger.info("got message get all users");
 
         frontendService.getAllUser(new MessageCallback<AllUsers> () {
@@ -68,7 +88,7 @@ public class MessageController {
             }
         });
 
-        return new Message();
+       // return new Message();
     }
 
     @GetMapping("/message")

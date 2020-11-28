@@ -8,11 +8,15 @@ const connect = () => {
         // stompClient.subscribe('/topic/response.' + $("#roomId").val(), (message) => showMessage(JSON.parse(message.body).messageStr));
         stompClient.subscribe('/topic/response/getUser.' + uuid, (message) => showMessage(message.body));
         stompClient.subscribe('/topic/response/getAllUsers', (message) => showListUsers(JSON.parse(message.body)));
+        stompClient.subscribe('/topic/response/createUser.' + uuid, (message) => showMessage(message.body));
         sendMsgGetAllUsers();
     });
 }
 
-const showMessage = (message) => $("#userDataContainer").html(message)
+const showMessage = (message) => {
+    $("#userDataContainer").html(message)
+    sendMsgGetAllUsers();
+}
 
 const showListUsers = (message) => {
 
@@ -35,6 +39,21 @@ const sendMsgGetUser = () => {
 const sendMsgGetAllUsers = () => {
     stompClient.send("/app/getAllUsers")
 }
+const sendMsgCreateUser = () => {
+    const user = {};
+
+    user.name = $("#name").val();
+    user.login = $("#login").val();
+    user.password = $("#password").val();
+    user.phone1 = $("#phone1").val();
+    user.phone2 = $("#phone2").val();
+    user.address = $("#address").val();
+
+    stompClient.send("/app/createUser." + uuid, {},  JSON.stringify(user));
+    //stompClient.send("/app/getUser." + uuid, {}, JSON.stringify({'messageStr': $("#userIdTextBox").val()}))
+
+}
+
 
 $(document).ready(function () {
     connect();

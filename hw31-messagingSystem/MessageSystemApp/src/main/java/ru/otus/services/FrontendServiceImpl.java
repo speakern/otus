@@ -37,6 +37,13 @@ public class FrontendServiceImpl implements FrontendService {
     }
 
     @Override
+    public void createUser(User user, MessageCallback<User> dataConsumer) {
+        Message outMsg = msClient.produceMessage(databaseServiceClientName, user,
+                MessageType.CREATEUSER, dataConsumer);
+        msClient.sendMessage(outMsg);
+    }
+
+    @Override
     public void getAllUser(MessageCallback<AllUsers> dataConsumer){
         Message outMsg = msClient.produceMessage(databaseServiceClientName, new AllUsers(new ArrayList<>()),
                 MessageType.ALLUSERS, dataConsumer);
