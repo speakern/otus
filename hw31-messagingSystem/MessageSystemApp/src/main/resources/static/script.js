@@ -5,16 +5,18 @@ const connect = () => {
     stompClient.connect({}, (frame) => {
        // setConnected(true);
         console.log('Connected: ' + frame);
-        // stompClient.subscribe('/topic/response.' + $("#roomId").val(), (message) => showMessage(JSON.parse(message.body).messageStr));
-        stompClient.subscribe('/topic/response/getUser.' + uuid, (message) => showMessage(message.body));
+        stompClient.subscribe('/topic/response/getUser.' + uuid, (message) => showUser(message.body));
         stompClient.subscribe('/topic/response/getAllUsers', (message) => showListUsers(JSON.parse(message.body)));
-        stompClient.subscribe('/topic/response/createUser.' + uuid, (message) => showMessage(message.body));
+        stompClient.subscribe('/topic/response/createUser.' + uuid, () => usersRefresh());
         sendMsgGetAllUsers();
     });
 }
 
-const showMessage = (message) => {
-    $("#userDataContainer").html(message)
+const showUser = (message) => {
+    $("#userDataContainer").html(message);
+}
+
+const usersRefresh = () => {
     sendMsgGetAllUsers();
 }
 

@@ -50,15 +50,12 @@ public class MessageController {
                 }
             }
         });
-
-        //return new Message(HtmlUtils.htmlEscape(message.getMessageStr()));
     }
 
     @MessageMapping("/createUser.{uuid}")
     public void createUser(@DestinationVariable String uuid, UserForm userForm) {
         logger.info("got message:{}, uuid:{}", userForm, uuid);
 
-        //long userId = 1L;//Long.parseLong(message.getMessageStr());
         frontendService.createUser(userForm.getUser(), new MessageCallback<User>() {
 
             @Override
@@ -69,8 +66,6 @@ public class MessageController {
                 }
             }
         });
-
-       // return new Message();
     }
 
     @MessageMapping("/getAllUsers")
@@ -87,8 +82,6 @@ public class MessageController {
                 }
             }
         });
-
-       // return new Message();
     }
 
     @GetMapping("/message")

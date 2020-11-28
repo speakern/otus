@@ -2,7 +2,7 @@ package ru.otus.handlers.front;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.otus.dto.UserData;
+import ru.otus.dto.UserForm;
 import ru.otus.messagesystem.client.CallbackRegistry;
 import ru.otus.messagesystem.client.MessageCallback;
 import ru.otus.messagesystem.client.ResultDataType;
@@ -12,7 +12,7 @@ import ru.otus.messagesystem.RequestHandler;
 
 import java.util.Optional;
 
-public class GetUserDataResponseHandler implements RequestHandler<UserData> {
+public class GetUserDataResponseHandler implements RequestHandler<UserForm> {
     private static final Logger logger = LoggerFactory.getLogger(GetUserDataResponseHandler.class);
 
     private final CallbackRegistry callbackRegistry;

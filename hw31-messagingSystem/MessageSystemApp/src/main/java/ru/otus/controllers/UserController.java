@@ -28,21 +28,4 @@ public class UserController {
         return "users.html";
     }
 
-    @GetMapping("/user/create")
-    public String userCreateView(Model model) {
-        model.addAttribute("userForm", new UserForm());
-        return "create_user.html";
-    }
-
-    @PostMapping("/user/create")
-    public RedirectView userSave(@ModelAttribute UserForm userForm) {
-
-        if ((userForm.getName().length() > 3) && (userForm.getLogin().length() > 3) && (userForm.getPassword().length() > 3)) {
-            User user = userForm.getUser();
-
-            usersService.save(user);
-        }
-        return new RedirectView("/", true);
-    }
-
 }

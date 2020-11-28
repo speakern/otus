@@ -3,10 +3,11 @@ package ru.otus.dto;
 import ru.otus.domain.AddressDataSet;
 import ru.otus.domain.PhoneDataSet;
 import ru.otus.domain.User;
+import ru.otus.messagesystem.client.ResultDataType;
 
 import java.util.ArrayList;
 
-public class UserForm {
+public class UserForm extends ResultDataType {
     private String name;
     private String login;
     private String password;

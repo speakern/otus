@@ -16,7 +16,6 @@ const connect = () => {
     stompClient.connect({}, (frame) => {
         setConnected(true);
         console.log('Connected: ' + frame);
-        // stompClient.subscribe('/topic/response.' + $("#roomId").val(), (message) => showMessage(JSON.parse(message.body).messageStr));
         stompClient.subscribe('/topic/response.' + $("#roomId").val(), (message) => showMessage(message.body));
     });
 }

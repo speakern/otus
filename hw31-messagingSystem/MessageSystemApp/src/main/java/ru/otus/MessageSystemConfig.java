@@ -47,8 +47,8 @@ public class MessageSystemConfig {
         HandlersStore requestHandlerFrontendStore = new HandlersStoreImpl();
         requestHandlerFrontendStore.addHandler(MessageType.USER_DATA, new GetUserDataResponseHandler(callbackRegistry));
         requestHandlerFrontendStore.addHandler(MessageType.USER, new GetUserDataResponseHandler(callbackRegistry));
-        requestHandlerFrontendStore.addHandler(MessageType.ALLUSERS, new GetUserDataResponseHandler(callbackRegistry));
-        requestHandlerFrontendStore.addHandler(MessageType.CREATEUSER, new GetUserDataResponseHandler(callbackRegistry));
+        requestHandlerFrontendStore.addHandler(MessageType.ALL_USERS, new GetUserDataResponseHandler(callbackRegistry));
+        requestHandlerFrontendStore.addHandler(MessageType.CREATE_USER, new GetUserDataResponseHandler(callbackRegistry));
         MsClient frontendMsClient = new MsClientImpl(FRONTEND_SERVICE_CLIENT_NAME,
                 messageSystem, requestHandlerFrontendStore, callbackRegistry);
         messageSystem.addClient(frontendMsClient);
@@ -61,8 +61,8 @@ public class MessageSystemConfig {
         HandlersStore requestHandlerDatabaseStore = new HandlersStoreImpl();
         requestHandlerDatabaseStore.addHandler(MessageType.USER_DATA, new GetUserDataRequestHandler(dbServiceUser));
         requestHandlerDatabaseStore.addHandler(MessageType.USER, new GetUserDataRequestHandler(dbServiceUser));
-        requestHandlerDatabaseStore.addHandler(MessageType.ALLUSERS, new GetAllUsersDataRequestHandler(dbServiceUser));
-        requestHandlerDatabaseStore.addHandler(MessageType.CREATEUSER, new CreateUsersDataRequestHandler(dbServiceUser));
+        requestHandlerDatabaseStore.addHandler(MessageType.ALL_USERS, new GetAllUsersDataRequestHandler(dbServiceUser));
+        requestHandlerDatabaseStore.addHandler(MessageType.CREATE_USER, new CreateUsersDataRequestHandler(dbServiceUser));
         MsClient databaseMsClient = new MsClientImpl(DATABASE_SERVICE_CLIENT_NAME,
                 messageSystem, requestHandlerDatabaseStore, callbackRegistry);
         messageSystem.addClient(databaseMsClient);
