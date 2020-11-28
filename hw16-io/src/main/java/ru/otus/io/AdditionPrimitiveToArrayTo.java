@@ -2,11 +2,11 @@ package ru.otus.io;
 
 import javax.json.JsonArrayBuilder;
 
-public class AddToArray implements AddToJson{
-    private JsonArrayBuilder jsonArray;
-    private Object object;
+public class AdditionPrimitiveToArrayTo implements AdditionPrimitiveTo {
+    private final JsonArrayBuilder jsonArray;
+    private final Object object;
 
-    public AddToArray(JsonArrayBuilder jsonArray, Object object) {
+    public AdditionPrimitiveToArrayTo(JsonArrayBuilder jsonArray, Object object) {
         this.jsonArray = jsonArray;
         this.object = object;
     }

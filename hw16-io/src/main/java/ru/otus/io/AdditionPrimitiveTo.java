@@ -1,6 +1,6 @@
 package ru.otus.io;
 
-public interface AddToJson {
+public interface AdditionPrimitiveTo {
     void addByte();
     void addShort();
     void addInteger();

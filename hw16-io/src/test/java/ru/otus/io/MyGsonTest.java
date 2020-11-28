@@ -8,15 +8,25 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MyGsonTest {
-    Gson gson = new Gson();
-    MyGson myGson = new MyGson();
+    private Gson gson;
+    private MyGson myGson;
 
     @BeforeEach
     public void setUp() {
+         gson = new Gson();
+         myGson = new MyGson();
+    }
+
+    @Test
+    @DisplayName("Тестируем непонятное поведение gson возвращать кавычки")
+    void customTest(){ ;
+        assertThat(myGson.toJson("aaa")).isEqualTo(gson.toJson("aaa"));
+        assertThat(myGson.toJson('b')).isEqualTo(gson.toJson('b'));
     }
 
     @Test
@@ -24,6 +34,7 @@ class MyGsonTest {
     void checkSimpleObject() {
         BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434, 'w');
         String myJson = myGson.toJson(originalObj);
+
         //String myJson = gson.toJson(originalObj);
         System.out.println(myJson);
 
@@ -40,6 +51,21 @@ class MyGsonTest {
         System.out.println(originalObj);
         String myJson = myGson.toJson(originalObj);
        // String myJson = gson.toJson(originalObj);
+        System.out.println(myJson);
+
+        BagOfPrimitivesAndObject newObj = gson.fromJson(myJson, BagOfPrimitivesAndObject.class);
+        System.out.println(newObj);
+
+        assertThat(newObj).isEqualTo(originalObj);
+    }
+
+    @Test
+    @DisplayName("Тестируем простой объект с вложенным объектом, который равен null")
+    void checkSimpleObjectWithNestedObjectWithNull() {
+        BagOfPrimitivesAndObject originalObj = new BagOfPrimitivesAndObject(22, "test", 10, 23.3434, null);
+        System.out.println(originalObj);
+        String myJson = myGson.toJson(originalObj);
+        // String myJson = gson.toJson(originalObj);
         System.out.println(myJson);
 
         BagOfPrimitivesAndObject newObj = gson.fromJson(myJson, BagOfPrimitivesAndObject.class);
@@ -206,17 +232,55 @@ class MyGsonTest {
     }
 
     @Test
-    @DisplayName("Тестируем массив объектов")
-    void checkArrayObjectType() {
-        BagOfPrimitives originalObj = new BagOfPrimitives(22, "test", 10, 23.3434, 'w');
-        BagOfPrimitives[] originalArray = new BagOfPrimitives[2];
-        originalArray[0] = originalObj;
-        originalArray[1] = originalObj;
+    @DisplayName("Тестируем массив массивов")
+    void checkArrayToArrayType() {
+        int[] nestedArray = new int[] { 10, 100 };
+        int[][] originalArray = new int[2][2];
+        originalArray[0] = nestedArray;
+        originalArray[1] = nestedArray;
 
         String myJson = myGson.toJson(originalArray);
         //String myJson = gson.toJson(originalArray);
         System.out.println(myJson);
-        BagOfPrimitives[] newArray = gson.fromJson(myJson, BagOfPrimitives[].class);
+        int[][] newArray = gson.fromJson(myJson, int[][].class);
+        assertThat(newArray).isEqualTo(originalArray);
+    }
+
+    @Test
+    @DisplayName("Тестируем массив коллекций")
+    void checkArrayObjectType() {
+        List<String> nestedList = new ArrayList<>();
+        nestedList.add("start");
+        nestedList.add("end");
+
+        List<String>[] originalArray = new ArrayList[2];
+        originalArray[0] = nestedList;
+        originalArray[1] = nestedList;
+
+        String myJson = myGson.toJson(originalArray);
+        //String myJson = gson.toJson(originalArray);
+        System.out.println(myJson);
+        List<String>[] newArray = gson.fromJson(myJson, List[].class);
+        assertThat(newArray).isEqualTo(originalArray);
+    }
+
+    @Test
+    @DisplayName("Тестируем коллекции коллекций")
+    void checkCollectionTypeArrayListWithCollection()  {
+        List<String> nestedList = new ArrayList<>();
+        nestedList.add("start");
+        nestedList.add("end");
+
+        List<List<String>> originalArray = new ArrayList<>();
+        originalArray.add(nestedList);
+        originalArray.add(nestedList);
+        //originalArray.add(null);
+
+        String myJson = myGson.toJson(originalArray);
+        //String myJson = gson.toJson(originalArray);
+        System.out.println(myJson);
+        Type type = new TypeToken<List<List<String>>>(){}.getType();
+        List<List<String>> newArray = gson.fromJson(myJson, type);
         assertThat(newArray).isEqualTo(originalArray);
     }
 
@@ -244,19 +308,19 @@ class MyGsonTest {
     @Test
     @DisplayName("Тестируем коллекции: ArrayList")
     void checkCollectionTypeArrayList() {
-        BagOfPrimitivesAndArrayList obj = new BagOfPrimitivesAndArrayList(22, "test", 10);
+        BagOfPrimitives obj = new BagOfPrimitives(22, "test", 10, 23.3434, 'w');
 
-        ArrayList<BagOfPrimitivesAndArrayList> originalList = new ArrayList<>();
+        ArrayList<BagOfPrimitives> originalList = new ArrayList<>();
         originalList.add(obj);
         originalList.add(obj);
         System.out.println(originalList);
 
-        String json = myGson.toJson(originalList);
-        //String json = gson.toJson(originalList);
+        //String json = myGson.toJson(originalList);
+        String json = gson.toJson(originalList);
         System.out.println(json);
 
-        Type type = new TypeToken<ArrayList<BagOfPrimitivesAndArrayList>>(){}.getType();
-        ArrayList<BagOfPrimitivesAndArrayList> newList = gson.fromJson(json, type);
+        Type type = new TypeToken<ArrayList<BagOfPrimitives>>(){}.getType();
+        ArrayList<BagOfPrimitives> newList = gson.fromJson(json, type);
 
         System.out.println(originalList.equals(newList));
         System.out.println(newList);
