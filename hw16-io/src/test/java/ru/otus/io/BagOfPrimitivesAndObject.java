@@ -19,6 +19,14 @@ public class BagOfPrimitivesAndObject {
         this.emptyClass = new EmptyClass();
     }
 
+    public BagOfPrimitivesAndObject(int value1, String value2, int value3, double value4, BagOfPrimitives bagOfPrimitives) {
+        this.value1 = value1;
+        this.value2 = value2;
+        this.value3 = value3;
+        this.value4 = value4;
+        this.bagOfPrimitives = bagOfPrimitives;
+    }
+
     @Override
     public String toString() {
         return "BagOfPrimitivesAndObject{" +
