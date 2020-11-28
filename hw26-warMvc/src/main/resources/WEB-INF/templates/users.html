@@ -1,0 +1,99 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Пользователи</title>
+    <script>
+        function getUser(url, valueControlName) {
+            const valueControl = document.getElementById(valueControlName);
+            const userDataContainer = document.getElementById('userDataContainer');
+            const fullUrl = url + (valueControl? (encodeURIComponent(valueControl.value)) : '');
+            fetch(fullUrl)
+                .then(response => response.json())
+                .then(user => userDataContainer.innerHTML = JSON.stringify(user));
+        }
+    </script>
+
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .users, .users td {
+            border: 1px solid lightgray;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: block;
+        }
+
+        input {
+            width: 150px;
+        }
+
+
+        select {
+            width: 154px;
+        }
+
+        button {
+            width: 250px;
+        }
+
+        .controls-container {
+            margin-bottom: 5px;
+        }
+
+        .single-button-container {
+            margin-left: 158px;
+        }
+
+        h3 {
+            background: url("../static/listmark.png") no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+
+    <style th:inline="text">
+        h3 {
+            background: url([[@{/static/listmark.png}]]) no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+
+</br>
+<h4>Получить пользователя по id:</h4>
+<div class="controls-container">
+    <input type="text" id = "userIdTextBox" value="3" placeholder="Введите id пользователя" >
+    <button onclick="getUser('api/user/', 'userIdTextBox')">Получить пользователя по id</button>
+</div>
+<pre id = "userDataContainer"></pre>
+
+<a th:href="@{/user/create}">Создать пользователя</a>
+</br>
+<h4>Список пользователей:</h4>
+<table class="users">
+    <thead>
+    <tr>
+        <td style="width: 50px">Id</td>
+        <td style="width: 150px">Имя</td>
+        <td style="width: 100px">Логин</td>
+        <td style="width: 100px">Пароль</td>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">1</td>
+            <td th:text="${user.name}">John</td>
+            <td th:text="${user.login}">login</td>
+            <td th:text="${user.password}">password</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
